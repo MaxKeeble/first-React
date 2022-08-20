@@ -1,0 +1,46 @@
+.messages-title {
+  margin-bottom: 20px;
+}
+
+.messages {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  gap: 10px;
+}
+
+.dialog-item {
+  padding: 10px;
+}
+.dialog-item > .active {
+  color: #99f;
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  max-width: 480px;
+  padding: 10px;
+  border: 1px solid #999;
+  border-radius: 10px;
+}
+
+.message {
+  margin-bottom: 6px;
+  border-radius: 10px;
+  padding: 8px 15px;
+  max-width: 60%;
+  background-color: rgba(100, 100, 100, 0.5);
+}
+
+.left {
+  align-self: flex-start;
+}
+.right {
+  align-self: flex-end;
+}
+
+.left + .right,
+.right + .left {
+  margin-top: 12px;
+}

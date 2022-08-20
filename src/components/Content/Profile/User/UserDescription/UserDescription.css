@@ -1,0 +1,11 @@
+.ud {
+  grid-area: description;
+}
+
+.ud__name {
+  margin-bottom: 20px;
+}
+
+.ud__web-site_link {
+  display: inline;
+}
