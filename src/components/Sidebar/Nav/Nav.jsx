@@ -2,10 +2,11 @@
 import { NavLink } from 'react-router-dom';
 import './Nav.css';
 
-export function Nav() {
-
+export function Nav(props) {
+  let className = 'nav';
+  if (props.className) className += ' '+ props.className;
   return (
-    <div className='nav'>
+    <div className={className}>
       <ul className="nav__list">
         <li className="nav__item">
           <NavLink to='/' className='nav__link'>Profile</NavLink>

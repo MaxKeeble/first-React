@@ -7,13 +7,13 @@ import { Footer } from './components/Footer/Footer';
 import { BrowserRouter } from 'react-router-dom';
 
 
-function App({data}) {
+function App({ data, addPost }) {
   return (
     <BrowserRouter>
       <div className="App">
         <Header />
-        <Sidebar />
-        <Content data={data.content}/>
+        <Sidebar data={data.friendsList} />
+        <Content data={data.content} addPost={addPost} />
         <Footer />
       </div>
     </BrowserRouter>

@@ -1,0 +1,41 @@
+.friends {
+}
+
+.friends__title {
+  margin-bottom: 20px;
+}
+
+.friends__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.friends__list.vertical {
+  flex-direction: column;
+}
+
+.friend {
+  max-width: 80px;
+}
+
+.friend__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.friend__link.vertical {
+  flex-direction: row;
+  gap: 10px;
+}
+
+.friend__avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #59f;
+}
+
+.friend__name {
+  text-align: center;
+}

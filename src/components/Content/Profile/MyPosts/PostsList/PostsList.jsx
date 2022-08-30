@@ -3,10 +3,11 @@ import './PostsList.css';
 import { Post } from "./Post/Post";
 
 
-export function PostsList({data}) {
-const postsElements = data.map(el => <li className="my-posts__item">
-  <Post imgSrc={el.imgSrc} text={el.text} likeCount={el.likeCount} />
-</li>);
+export function PostsList({ data }) {
+  const postsElements = data.map(el =>
+    <li className="my-posts__item">
+      <Post data={el} />
+    </li>);
   return (
     <ul className="my-posts__list">
       {postsElements}
