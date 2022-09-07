@@ -8,12 +8,13 @@ import { BrowserRouter } from 'react-router-dom';
 
 
 function App({ store }) {
+  let state = store.getState();
   return (
     <BrowserRouter>
       <div className="App">
         <Header />
-        <Sidebar data={store.state.friendsList} />
-        <Content data={store.state.content} addPost={store.addPost.bind(store)} updatePostText={store.updatePostText.bind(store)} />
+        <Sidebar data={state.friendsList} />
+        <Content profilePageData={state.profilePage} messagesPageData={state.messagesPage} dispatch={store.dispatch} />
         <Footer />
       </div>
     </BrowserRouter>

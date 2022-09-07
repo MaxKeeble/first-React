@@ -4,12 +4,12 @@ import { Route, Routes } from 'react-router-dom';
 import { Profile } from './Profile/Profile';
 import { Messages } from './Messages/Messages';
 
-export function Content({ data, addPost, updatePostText }) {
+export function Content({ profilePageData, messagesPageData, dispatch }) {
   return (
     <div className='content'>
       <Routes>
-        <Route path='/' element={<Profile data={data.profilePage} addPost={addPost} updatePostText={updatePostText} />} />
-        <Route path='messages/*' element={<Messages data={data.messagesPage} />} />
+        <Route path='/' element={<Profile data={profilePageData} dispatch={dispatch} />} />
+        <Route path='messages/*' element={<Messages data={messagesPageData} dispatch={dispatch} />} />
       </Routes>
     </div>
   )

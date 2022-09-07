@@ -1,6 +1,14 @@
+import profilePageReducer from "./profilePageReducer";
+import messagesPageReducer from "./messagesPageReducer";
+
+const ADD_POST = 'ADD-POST';
+const UPDATE_POST_TEXT = 'UPDATE-POST-TEXT';
+const SEND_MESSAGE = 'SEND-MESSAGE';
+const UPDATE_MESSAGE_TEXT = 'UPDATE-MESSAGE-TEXT';
+
 let store = {
 
-  state: {
+  _state: {
     friendsList: [
       { id: 'id1', name: 'Denis', imgSrc: 'https://e7.pngegg.com/pngimages/165/652/png-clipart-businessperson-computer-icons-avatar-avatar-heroes-public-relations.png' },
       { id: 'id2', name: 'Vova', imgSrc: 'https://www.pngmart.com/files/21/Account-PNG-HD.png' },
@@ -9,21 +17,18 @@ let store = {
     ],
     content: {
       profilePage: {
+        avatarImgSrc: '../img/user-ava.jpg',
         posts: [
           {
-            imgSrc: "https://lh5.googleusercontent.com/-_2HAOUf_Sg4/AAAAAAAAAAI/AAAAAAAAAEs/Tl3ETkKaEGI/photo.jpg?sz=256",
             text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur magni dolor molestias nostrum veniam ea doloribus quas officiis assumenda porro, autem provident a eaque nam. orem ipsum dolor sit amet consectetur adipisicing elit.',
             likeCount: '10'
           }, {
-            imgSrc: "https://www.shareicon.net/data/2016/07/05/791219_man_512x512.png",
             text: 'Hello, Vova!!!',
             likeCount: '8'
           }, {
-            imgSrc: "https://i.pinimg.com/236x/8d/4d/58/8d4d58f0f98b880e795e2fb3139bf01a.jpg",
             text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur magni dolor molestias nostrum veniam ea doloribus quas officiis assumenda porro, autem provident a eaque nam. orem ipsum dolor sit amet consectetur adipisicing elit.',
             likeCount: '28'
           }, {
-            imgSrc: "https://lh5.googleusercontent.com/-_2HAOUf_Sg4/AAAAAAAAAAI/AAAAAAAAAEs/Tl3ETkKaEGI/photo.jpg?sz=256",
             text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur magni dolor molestias nostrum veniam ea doloribus quas officiis assumenda porro, autem provident a eaque nam. orem ipsum dolor sit amet consectetur adipisicing elit.',
             likeCount: '222'
           },
@@ -46,35 +51,28 @@ let store = {
           { id: '5', message: 'Hitman', side: 'right' },
           { id: '6', message: 'Hitachi', side: 'left' },
         ],
+        newMessageText: '',
       },
     },
   },
-  render: () => { console.log("%cRender is not assigned!", 'color:#900; font-weight:900') },
+
+  getState() { return this._state; },
+
+  _render: () => { console.log('%cRender is not assigned!', 'color:#900; font-weight:900') },
+
   assignRender(f) {
-    this.render = f;
-  },
-  addPost() {
-    let text = this.state.content.profilePage.newPostText;
-
-    if (!text.trim()) return;
-
-    let obj = {
-      imgSrc: "https://lh5.googleusercontent.com/-_2HAOUf_Sg4/AAAAAAAAAAI/AAAAAAAAAEs/Tl3ETkKaEGI/photo.jpg?sz=256",
-      text,
-      likeCount: '0'
-    };
-
-    this.state.content.profilePage.posts.push(obj);
-    this.state.content.profilePage.newPostText = '';
-
-    this.render();
-  },
-  updatePostText(text) {
-    this.state.content.profilePage.newPostText = text;
-    this.render();
+    this._render = f;
   },
 
+  dispatch(action) {
+    this._state.content.profilePage = profilePageReducer(this._state.content.profilePage, action);
+    this._state.content.messagesPage = messagesPageReducer(this._state.content.messagesPage, action);
+    this._render();
+  },
 };
 
-export default store;
+export const addPost_sendMessage_actionCreator = (buttonText) => ({ type: (buttonText === 'Добавить пост' ? ADD_POST : SEND_MESSAGE) });
+export const updatePostText_updateMessageText_actionCreator = (buttonText, textareaText) => ({ type: (buttonText === 'Добавить пост' ? UPDATE_POST_TEXT : UPDATE_MESSAGE_TEXT), text: textareaText });
 
+window.messages = store._state.content.messagesPage.messages;
+export default store;

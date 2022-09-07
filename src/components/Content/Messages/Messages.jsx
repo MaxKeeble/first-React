@@ -1,5 +1,6 @@
 // import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { MessageForm } from '../MessageForm/MessageForm';
 import './Messages.css';
 
 const DialogItem = props => (
@@ -14,11 +15,9 @@ const Message = props => (
   <div className={"message " + (props.data.side || 'left')}>{props.data.message}</div>
 );
 
-export function Messages({ data }) {
-  
+export function Messages({ data, dispatch }) {
   const dialogsElements = data.dialogs.map(el => <DialogItem data={el} />);
   const messagesElements = data.messages.map(el => <Message data={el} />);
-
   return (
     <div className="">
       <h2 className='messages-title'>Dialogs</h2>
@@ -26,8 +25,11 @@ export function Messages({ data }) {
         <ul className="dialog-list">
           {dialogsElements}
         </ul>
-        <div className="dialog-content">
-          {messagesElements}
+        <div className="dialog-content-wrapper">
+          <div className="dialog-content">
+            {messagesElements}
+          </div>
+          <MessageForm textareaText={data.newMessageText} dispatch={dispatch} buttonText='Добавить сообщение' />
         </div>
       </div>
     </div>

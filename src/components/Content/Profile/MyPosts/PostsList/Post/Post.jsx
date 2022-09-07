@@ -1,12 +1,12 @@
 // import React from 'react';
 import './Post.css';
 
-export function Post({ data }) {
+export function Post({ data, avatarImgSrc }) {
   data.likeCount = data.likeCount || 0;
   return (
     <div className="post">
       <div className="post__content">
-        <img className='post__avatar' src={data.imgSrc} alt="post avatar" />
+        <img className='post__avatar' src={avatarImgSrc} alt="post avatar" />
         <p className="post__text">{data.text}</p>
       </div>
       <div className="like">
