@@ -1,25 +1,43 @@
 // import React from 'react';
+import { connect } from 'react-redux';
 import './FriendsList.css';
 
-const Friend = ({ data, vertical }) =>
-  <li className='friend'>
+const Friend = ({ data, vertical }) => {
+  return <li className='friend'>
     <a href={data.url} className={"friend__link" + (vertical ? ' vertical' : '')}>
       <img className="friend__avatar" src={data.imgSrc} alt="avatar" />
       <span className="friend__name">{data.name}</span>
     </a>
-  </li>;
+  </li>
+};
 
-export function FriendsList({ data, vertical, count }) {
-
-  const friendsElements = data.slice(0, count).map(el => <Friend data={el} vertical={vertical} />);
-
+function FriendsList({ data, vertical }) {
+  const friendsElements = data.map(el => <Friend data={el} vertical={vertical} key={el.id} />);
   return (
     <div className="friends">
-      <h2 className="friends__title">Друзья</h2>
+      <h2 className="friends__title">Friends</h2>
       <ul className={"friends__list" + (vertical ? ' vertical' : '')}>
         {friendsElements}
       </ul>
     </div>
   )
-
 };
+
+const mapStateToProps = (state, myProps) => {
+  const data = myProps.count ? state.friendsList.slice(0, myProps.count) : state.friendsList;
+  return {
+    data,
+    vertical: myProps.vertical || false,
+  };
+};
+
+// const mapDispatchToProps = (dispatch, p) => {
+//   console.log(p);
+//   return {
+//     send: function () {
+
+//     }
+//   }
+// };
+
+export const FriendsListContainer = connect(mapStateToProps)(FriendsList);

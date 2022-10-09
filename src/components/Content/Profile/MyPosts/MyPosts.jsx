@@ -1,13 +1,14 @@
 import './MyPosts.css';
-import { MessageForm } from '../../MessageForm/MessageForm';
-import { PostsList } from './PostsList/PostsList';
+import { TextFormContainer } from '../../TextForm/TextFormContainer';
+import { PostsListContainer } from './PostsList/PostsList';
 
-export function MyPosts({ data, dispatch }) {
+export function MyPosts({ data, store }) {
+  let currentText = store.getState().profilePage.newPostText;
   return (
     <div className='my-posts'>
       <h3 className='my-posts__heading'>My posts</h3>
-      <MessageForm textareaText={data.newPostText} dispatch={dispatch} buttonText='Добавить пост'/>
-      <PostsList data={data.posts} avatarImgSrc={data.avatarImgSrc}/>
+      <TextFormContainer buttonText='Add post' currentText={currentText} />
+      <PostsListContainer />
     </div>
   )
 };

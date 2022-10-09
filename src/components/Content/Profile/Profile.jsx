@@ -3,11 +3,11 @@ import './Profile.css';
 import { User } from './User/User';
 import { MyPosts } from './MyPosts/MyPosts';
 
-export function Profile({ data, dispatch }) {
+export function Profile({ data, store }) {
   return (
     <div className='content__profile'>
       <User />
-      <MyPosts data={data} dispatch={dispatch} />
+      <MyPosts data={data} store={store} />
     </div>
   )
 };

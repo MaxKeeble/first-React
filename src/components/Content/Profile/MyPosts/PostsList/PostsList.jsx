@@ -1,12 +1,13 @@
 // import React from 'react';
 import './PostsList.css';
 import { Post } from "./Post/Post";
+import { connect } from 'react-redux';
 
 
-export function PostsList({ data, avatarImgSrc }) {
-  const postsElements = data.map(el =>
-    <li className="my-posts__item">
-      <Post data={el} avatarImgSrc={avatarImgSrc}/>
+export function PostsList({ posts, avatarImgSrc }) {
+  const postsElements = posts.map(el =>
+    <li className="my-posts__item" key={el.id}>
+      <Post data={el} avatarImgSrc={avatarImgSrc} />
     </li>);
   return (
     <ul className="my-posts__list">
@@ -14,3 +15,13 @@ export function PostsList({ data, avatarImgSrc }) {
     </ul>
   )
 };
+
+
+
+const mapStateToProps = (state) => {
+  return {
+    posts: [...state.profilePage.posts],
+    avatarImgSrc: state.profilePage.avatarImgSrc,
+  };
+};
+export const PostsListContainer = connect(mapStateToProps)(PostsList);

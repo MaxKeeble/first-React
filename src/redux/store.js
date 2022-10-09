@@ -72,6 +72,8 @@ let store = {
 };
 
 export const addPost_sendMessage_actionCreator = (buttonText) => ({ type: (buttonText === 'Добавить пост' ? ADD_POST : SEND_MESSAGE) });
+// export const addPost_actionCreator = () => ({ type: ADD_POST });
+// export const sendMessage_actionCreator = () => ({ type: SEND_MESSAGE });
 export const updatePostText_updateMessageText_actionCreator = (buttonText, textareaText) => ({ type: (buttonText === 'Добавить пост' ? UPDATE_POST_TEXT : UPDATE_MESSAGE_TEXT), text: textareaText });
 
 window.messages = store._state.content.messagesPage.messages;

@@ -14,7 +14,7 @@ function App({ store }) {
       <div className="App">
         <Header />
         <Sidebar data={state.friendsList} />
-        <Content profilePageData={state.profilePage} messagesPageData={state.messagesPage} dispatch={store.dispatch} />
+        <Content profilePageData={state.profilePage} messagesPageData={state.messagesPage} dispatch={store.dispatch} store={store} />
         <Footer />
       </div>
     </BrowserRouter>

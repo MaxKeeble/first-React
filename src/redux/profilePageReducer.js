@@ -5,15 +5,19 @@ let initialValue = {
   avatarImgSrc: '../img/user-ava.jpg',
   posts: [
     {
+      id: 1,
       text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur magni dolor molestias nostrum veniam ea doloribus quas officiis assumenda porro, autem provident a eaque nam. orem ipsum dolor sit amet consectetur adipisicing elit.',
       likeCount: '10'
     }, {
+      id: 2,
       text: 'Hello, Vova!!!',
       likeCount: '8'
     }, {
+      id: 3,
       text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur magni dolor molestias nostrum veniam ea doloribus quas officiis assumenda porro, autem provident a eaque nam. orem ipsum dolor sit amet consectetur adipisicing elit.',
       likeCount: '28'
     }, {
+      id: 4,
       text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur magni dolor molestias nostrum veniam ea doloribus quas officiis assumenda porro, autem provident a eaque nam. orem ipsum dolor sit amet consectetur adipisicing elit.',
       likeCount: '222'
     },
@@ -34,12 +38,17 @@ const actors = {
       likeCount: '0'
     };
 
-    substate.posts.push(obj);
-    substate.newPostText = '';
-    return substate;
+    let stateCopy = { ...substate };
+    stateCopy.posts = [...substate.posts];
+
+    stateCopy.posts.push(obj);
+    stateCopy.newPostText = '';
+
+    return stateCopy;
   },
 
   [UPDATE_POST_TEXT]: (substate, action) => {
+    substate = { ...substate };
     substate.newPostText = action.text;
     return substate;
   }

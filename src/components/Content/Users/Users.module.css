@@ -1,0 +1,66 @@
+.title {
+  margin-bottom: 30px;
+}
+
+.user {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  max-width: 550px;
+  margin-bottom: 25px;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+}
+
+.image {
+  margin-bottom: 10px;
+  width: 83px;
+  height: 83px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #207;
+}
+
+.button {
+  min-width: 80px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #400;
+}
+.button.followed {
+  background-color: #900;
+}
+
+.userInfo {
+  display: grid;
+  grid-template:
+    "name location"
+    "status _";
+  flex: 1 0;
+  padding: 7px 15px;
+  border: 1px solid #aaa;
+  border-radius: 20px;
+}
+
+.fullname {
+  grid-area: name;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.status {
+  grid-area: status;
+  align-self: end;
+  font-size: 14px;
+}
+
+.location {
+  grid-area: location;
+  justify-self: end;
+  text-align: right;
+  font-weight: 700;
+  font-size: 17px;
+}
