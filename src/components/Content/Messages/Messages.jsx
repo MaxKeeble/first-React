@@ -1,6 +1,7 @@
 // import React from 'react';
+import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { TextFormContainer } from '../TextForm/TextFormContainer';
+import { TextFormForMessagesContainer } from '../TextForm/TextForm';
 import './Messages.css';
 
 const DialogItem = props => (
@@ -15,11 +16,9 @@ const Message = props => (
   <div className={"message " + (props.data.side || 'left')}>{props.data.message}</div>
 );
 
-export function Messages({ store }) {
-  const data = store.getState().messagesPage;
-  const dialogsElements = data.dialogs.map(el => <DialogItem data={el} key={el.id}/>);
-  const messagesElements = data.messages.map(el => <Message data={el} key={el.id}/>);
-  let currentText = store.getState().messagesPage.newMessageText;
+function Messages({ dialogs, messages }) {
+  const dialogsElements = dialogs.map(el => <DialogItem data={el} key={el.id} />);
+  const messagesElements = messages.map(el => <Message data={el} key={el.id} />);
 
   return (
     <div className="">
@@ -32,9 +31,16 @@ export function Messages({ store }) {
           <div className="dialog-content">
             {messagesElements}
           </div>
-          <TextFormContainer buttonText='Add message' currentText={currentText} />
+          <TextFormForMessagesContainer />
         </div>
       </div>
     </div>
   )
 };
+
+let mapStateToProps = (state) => ({
+  dialogs: state.messagesPage.dialogs,
+  messages: state.messagesPage.messages,
+});
+
+export default connect(mapStateToProps)(Messages);

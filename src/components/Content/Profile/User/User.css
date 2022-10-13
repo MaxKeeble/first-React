@@ -1,9 +1,9 @@
 .user {
   display: grid;
   grid-template: min-content min-content / max-content 1fr;
-  grid-template-areas: 
-  'banner banner'
-  'avatar description';
+  grid-template-areas:
+    "banner banner"
+    "avatar description";
   gap: 20px;
   margin-bottom: 50px;
 }
@@ -19,4 +19,17 @@
   height: 100px;
   width: 100px;
   border-radius: 7px;
+}
+.ud {
+  grid-area: description;
+}
+
+.ud__name {
+  margin-bottom: 20px;
+}
+
+.contact-link {
+  display: inline-block;
+  text-decoration: underline;
+  color: #ccf;
 }

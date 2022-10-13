@@ -1,3 +1,15 @@
+.paginationBTN {
+  display: inline-block;
+  padding: 0 5px 2px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+.active {
+  color: #ccf;
+  border-bottom: 1px solid #ccf;
+  cursor: default;
+}
+
 .title {
   margin-bottom: 30px;
 }

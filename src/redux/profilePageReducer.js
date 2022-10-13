@@ -1,8 +1,26 @@
 const ADD_POST = 'ADD-POST';
 const UPDATE_POST_TEXT = 'UPDATE-POST-TEXT';
+const SET_PROFILE_DATA = 'SET_PROFILE_DATA';
 
 let initialValue = {
   avatarImgSrc: '../img/user-ava.jpg',
+
+  profileData: {
+    userId: 1,
+    photos: {
+      small: '../img/user-ava.jpg',
+    },
+    fullName: 'Andrey Shchetnikov',
+    aboutMe: 'About me',
+    lookingForAJob: true,
+    lookingForAJobDescription: 'looking for a good job',
+    contacts: {
+      facebook: 'www.facebook.com',
+      youtube: null,
+      vk: 'vk.com/dimych'
+    },
+  },
+
   posts: [
     {
       id: 1,
@@ -51,7 +69,11 @@ const actors = {
     substate = { ...substate };
     substate.newPostText = action.text;
     return substate;
-  }
+  },
+
+  [SET_PROFILE_DATA]: (substate, action) => {
+    return { ...substate, profileData: action.profileData };
+  },
 
 };
 
@@ -60,3 +82,8 @@ const profilePageReducer = (substate = initialValue, action) => {
 };
 
 export default profilePageReducer;
+
+
+export const addPostActionCreator = () => ({ type: ADD_POST });
+export const updatePostTextActionCreator = (textareaText) => ({ type: UPDATE_POST_TEXT, text: textareaText });
+export const setProfileData = (profileData) => ({ type: SET_PROFILE_DATA, profileData });

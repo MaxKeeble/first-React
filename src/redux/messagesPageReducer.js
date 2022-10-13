@@ -51,3 +51,7 @@ const messagePageReducer = (substate = initialValue, action) => {
 };
 
 export default messagePageReducer;
+
+
+export const sendMessageActionCreator = () => ({ type: SEND_MESSAGE });
+export const updateMessageTextActionCreator = (textareaText) => ({ type: UPDATE_MESSAGE_TEXT, text: textareaText });

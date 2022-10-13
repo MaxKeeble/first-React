@@ -9,6 +9,7 @@ export function PostsList({ posts, avatarImgSrc }) {
     <li className="my-posts__item" key={el.id}>
       <Post data={el} avatarImgSrc={avatarImgSrc} />
     </li>);
+    
   return (
     <ul className="my-posts__list">
       {postsElements}
