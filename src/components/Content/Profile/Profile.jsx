@@ -2,10 +2,10 @@ import React from 'react';
 import './Profile.css';
 import { UserContainer } from './User/User';
 import { MyPosts } from './MyPosts/MyPosts';
-import axios from 'axios';
 import { connect } from 'react-redux';
-import { setProfileData } from '../../../redux/profilePageReducer';
+import { getProfile } from '../../../redux/profilePageReducer';
 import { useLocation, useParams } from 'react-router-dom';
+import { withAuthRedirect } from '../../../hoc/AuthRedirect';
 
 function Profile() {
   return (
@@ -16,30 +16,10 @@ function Profile() {
   )
 };
 
-
 class ProfileContainer extends React.Component {
   componentDidMount() {
     if (this.props.params.userId) {
-      axios.get('https://social-network.samuraijs.com/api/1.0/profile/' + this.props.params.userId)
-        .then(response => {
-          this.props.setProfileData(response.data);
-        }).catch(() => {
-          // this.props.setProfileData({
-          //   userId: 10,
-          //   photos: {
-          //     small: '../img/user-ava.jpg',
-          //   },
-          //   fullName: 'Andrey Makarevich',
-          //   aboutMe: 'About me!!!',
-          //   lookingForAJob: true,
-          //   lookingForAJobDescription: 'looking for a new job',
-          //   contacts: {
-          //     facebook: 'www.facebook.com',
-          //     youtube: null,
-          //     vk: 'vk.com/dimych'
-          //   },
-          // });
-        });
+      getProfile(this.props.params.userId);
     }
   }
 
@@ -48,15 +28,13 @@ class ProfileContainer extends React.Component {
   }
 };
 
-
 let ProfileContainerWithRouter = (props) => {
   let location = useLocation();
   let params = useParams();
   return <ProfileContainer {...props} location={location} params={params} />;
 };
 
-
 let mapDispatchToProps = {
-  setProfileData
+  getProfile,
 };
-export default connect(null, mapDispatchToProps)(ProfileContainerWithRouter);
+export default withAuthRedirect(connect(null, mapDispatchToProps)(ProfileContainerWithRouter));

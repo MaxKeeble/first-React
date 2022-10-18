@@ -3,6 +3,7 @@
   padding: 0 5px 2px;
   margin-bottom: 15px;
   cursor: pointer;
+  user-select: none;
 }
 .active {
   color: #ccf;
@@ -44,6 +45,10 @@
 }
 .button.followed {
   background-color: #900;
+}
+.button:disabled{
+  background-color: #ccc;
+  cursor: default;
 }
 
 .userInfo {

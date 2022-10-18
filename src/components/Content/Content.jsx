@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import ProfileContainer from './Profile/Profile';
 import Messages from './Messages/Messages';
 import { UsersContainer } from './Users/Users';
+import { Login } from './Login/Login';
 
 export function Content() {
   return (
@@ -13,6 +14,7 @@ export function Content() {
         <Route path='/*' element={<ProfileContainer />} />
         <Route path='messages/*' element={<Messages />} />
         <Route path='users/*' element={<UsersContainer />} />
+        <Route path='login' element={<Login />} />
       </Routes>
     </div>
   )

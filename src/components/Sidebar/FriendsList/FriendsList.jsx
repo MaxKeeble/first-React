@@ -31,13 +31,4 @@ const mapStateToProps = (state, myProps) => {
   };
 };
 
-// const mapDispatchToProps = (dispatch, p) => {
-//   console.log(p);
-//   return {
-//     send: function () {
-
-//     }
-//   }
-// };
-
 export const FriendsListContainer = connect(mapStateToProps)(FriendsList);

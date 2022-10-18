@@ -1,7 +1,6 @@
 import React from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
-import { setAuthorizedUserData, setIsFetching } from '../../redux/authorizationReducer';
+import { authorize } from '../../redux/authorizationReducer';
 import './Header.css';
 import { Preloader } from '../common/Preloader/Preloader';
 
@@ -23,15 +22,7 @@ function Header(props) {
 class HeaderContainer extends React.Component {
   componentDidMount() {
     if (!this.props.isAuthorized) {
-      this.props.setIsFetching(true);
-      axios.get('https://social-network.samuraijs.com/api/1.0/auth/me', {
-        withCredentials: true
-      }).then(response => {
-        this.props.setIsFetching(false);
-        if (response.data.resultCode === 0) this.props.setAuthorizedUserData({ authorizedUserData: response.data.data, isAuthorized: true });
-      }).catch(() => {
-        this.props.setIsFetching(false);
-      });
+      this.props.authorize();
     }
   }
 
@@ -46,4 +37,4 @@ const mapStateToProps = (state) => ({
   isFetching: state.authorization.isFetching,
 });
 
-export default connect(mapStateToProps, { setAuthorizedUserData, setIsFetching })(HeaderContainer);
+export default connect(mapStateToProps, { authorize })(HeaderContainer);

@@ -1,5 +1,7 @@
+import { authorizationAPI } from "../api/api";
+
 const SET_AUTHORIZED_USER_DATA = 'SET_AUTHORIZED_USER_DATA';
-const SET_IS_FETCHING = 'SET_IS_FETCHING';
+const SET_IS_FETCHING = 'SET_IS_FETCHING_FOR_AUTHORIZATION';
 
 let initialValue = {
   authorizedUserData: {
@@ -36,5 +38,19 @@ const authorizationReducer = (substate = initialValue, action) => {
 
 export default authorizationReducer;
 
+// Action creators
 export const setAuthorizedUserData = ({ authorizedUserData, isAuthorized }) => ({ type: SET_AUTHORIZED_USER_DATA, authorizedUserData, isAuthorized });
 export const setIsFetching = (isFetching) => ({ type: SET_IS_FETCHING, isFetching });
+
+// Thunk creators
+export const authorize = () => {
+  return (dispatch) => {
+    dispatch(setIsFetching(true));
+    authorizationAPI.me().then(data => {
+      dispatch(setIsFetching(false));
+      if (data.resultCode === 0) dispatch(setAuthorizedUserData({ authorizedUserData: data.data, isAuthorized: true }));
+    }).catch(() => {
+      dispatch(setIsFetching(false));
+    });
+  };
+};

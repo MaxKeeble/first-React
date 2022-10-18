@@ -1,9 +1,9 @@
 // import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { withAuthRedirect } from '../../../hoc/AuthRedirect';
 import { TextFormForMessagesContainer } from '../TextForm/TextForm';
 import './Messages.css';
-
 const DialogItem = props => (
   <li className="dialog-item">
     <NavLink className="dialog-item__link" to={props.data.id}>
@@ -43,4 +43,4 @@ let mapStateToProps = (state) => ({
   messages: state.messagesPage.messages,
 });
 
-export default connect(mapStateToProps)(Messages);
+export default withAuthRedirect(connect(mapStateToProps)(Messages));

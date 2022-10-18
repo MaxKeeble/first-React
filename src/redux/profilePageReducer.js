@@ -1,3 +1,5 @@
+import { usersAPI } from "../api/api";
+
 const ADD_POST = 'ADD-POST';
 const UPDATE_POST_TEXT = 'UPDATE-POST-TEXT';
 const SET_PROFILE_DATA = 'SET_PROFILE_DATA';
@@ -83,7 +85,17 @@ const profilePageReducer = (substate = initialValue, action) => {
 
 export default profilePageReducer;
 
-
+// Action creators
 export const addPostActionCreator = () => ({ type: ADD_POST });
 export const updatePostTextActionCreator = (textareaText) => ({ type: UPDATE_POST_TEXT, text: textareaText });
 export const setProfileData = (profileData) => ({ type: SET_PROFILE_DATA, profileData });
+
+// Thunk creators
+export const getProfile = (userId) => {
+  return (dispatch) => {
+    usersAPI.getProfile(userId).then(data => {
+      dispatch(setProfileData(data));
+    });
+  };
+};
+
