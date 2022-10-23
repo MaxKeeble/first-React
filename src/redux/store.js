@@ -72,5 +72,4 @@ let store = {
   },
 };
 
-window.messages = store._state.content.messagesPage.messages;
 export default store;

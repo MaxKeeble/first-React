@@ -20,4 +20,4 @@ export default function render() {
 
 render();
 
-store.subscribe(render);
+// store.subscribe(render);

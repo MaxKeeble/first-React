@@ -1,5 +1,4 @@
-const SEND_MESSAGE = 'SEND-MESSAGE';
-const UPDATE_MESSAGE_TEXT = 'UPDATE-MESSAGE-TEXT';
+const SEND_MESSAGE = 'SEND_MESSAGE';
 
 let initialValue = {
   dialogs: [
@@ -17,32 +16,20 @@ let initialValue = {
     { id: '6', message: 'Hitman', side: 'right' },
     { id: '7', message: 'Hitachi', side: 'left' },
   ],
-  newMessageText: '',
 };
 
 const actors = {
 
   [SEND_MESSAGE]: (substate, action) => {
-    let text = substate.newMessageText;
-
-    if (!text.trim()) return substate;
-
-    let obj = { id: 1, message: text, side: 'right' };
+    let obj = { id: 1, message: action.newMessageText, side: 'right' };
     obj.id = +substate.messages[substate.messages.length - 1].id + 1;
 
     substate = { ...substate };
     substate.messages = [...substate.messages];
 
     substate.messages.push(obj);
-    substate.newMessageText = '';
     return substate;
   },
-
-  [UPDATE_MESSAGE_TEXT]: (substate, action) => {
-    substate = { ...substate };
-    substate.newMessageText = action.text;
-    return substate;
-  }
 
 };
 
@@ -53,5 +40,4 @@ const messagePageReducer = (substate = initialValue, action) => {
 export default messagePageReducer;
 
 
-export const sendMessageActionCreator = () => ({ type: SEND_MESSAGE });
-export const updateMessageTextActionCreator = (textareaText) => ({ type: UPDATE_MESSAGE_TEXT, text: textareaText });
+export const sendMessageActionCreator = (newMessageText) => ({ type: SEND_MESSAGE, newMessageText });

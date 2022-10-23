@@ -1,10 +1,10 @@
 // import React from 'react';
-import './Content.css';
 import { Route, Routes } from 'react-router-dom';
+import './Content.css';
 import ProfileContainer from './Profile/Profile';
 import Messages from './Messages/Messages';
 import { UsersContainer } from './Users/Users';
-import { Login } from './Login/Login';
+import Login from './Login/Login';
 
 export function Content() {
   return (

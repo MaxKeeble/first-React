@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
+import { compose } from 'redux';
 import { follow, getUsers, setCurrentPageNumber, setIsFetching, setUserFollowingFetching, setUsers, setUsersCount, unfollow } from "../../../redux/usersPageReducer";
 import styles from "./Users.module.css";
 import defaultPhoto from "../../../assets/images/defaultPhoto.jpg";
@@ -10,10 +11,6 @@ import { withAuthRedirect } from '../../../hoc/AuthRedirect';
 function Users(props) {
 
   let paginationButtons = new Array(props.pagesNumber).fill(0).map((el, index) => {
-    // return <span className={(index + 1) === props.currentPageNumber
-    //   ? styles.paginationBTN + ' ' + styles.active
-    //   : styles.paginationBTN} key={index} onClick={(e) => { props.onPageChanged(index + 1) }}>{index + 1}</span>;
-
     return (index + 1) === props.currentPageNumber
       ? (<button className={styles.paginationBTN + ' ' + styles.active} key={index}>{index + 1}</button>)
       : (<button className={styles.paginationBTN} key={index} onClick={(e) => { props.onPageChanged(index + 1) }}>{index + 1}</button>);
@@ -131,7 +128,6 @@ let mapStateToProps = (state, myProps) => {
 // }
 //   };
 // };
-
 let mapDispatchToProps = {
   follow,
   unfollow,
@@ -143,6 +139,5 @@ let mapDispatchToProps = {
   getUsers,
 };
 
-export let UsersContainer = withAuthRedirect(connect(mapStateToProps, mapDispatchToProps)(UsersAPIContainer));
-
-
+// export let UsersContainer = withAuthRedirect(connect(mapStateToProps, mapDispatchToProps)(UsersAPIContainer));
+export let UsersContainer = compose(withAuthRedirect, connect(mapStateToProps, mapDispatchToProps))(UsersAPIContainer);

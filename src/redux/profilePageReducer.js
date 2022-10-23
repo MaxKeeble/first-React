@@ -1,8 +1,8 @@
-import { usersAPI } from "../api/api";
+import { profileAPI } from "../api/api";
 
-const ADD_POST = 'ADD-POST';
-const UPDATE_POST_TEXT = 'UPDATE-POST-TEXT';
+const ADD_POST = 'ADD_POST';
 const SET_PROFILE_DATA = 'SET_PROFILE_DATA';
+const SET_STATUS = 'SET_STATUS';
 
 let initialValue = {
   avatarImgSrc: '../img/user-ava.jpg',
@@ -13,6 +13,7 @@ let initialValue = {
       small: '../img/user-ava.jpg',
     },
     fullName: 'Andrey Shchetnikov',
+    status: '0-0',
     aboutMe: 'About me',
     lookingForAJob: true,
     lookingForAJobDescription: 'looking for a good job',
@@ -42,19 +43,16 @@ let initialValue = {
       likeCount: '222'
     },
   ],
-  newPostText: '',
+  // newPostText: '',
 };
 
 const actors = {
 
   [ADD_POST]: (substate, action) => {
-    let text = substate.newPostText;
-
-    if (!text.trim()) return substate;
 
     let obj = {
       imgSrc: 'https://lh5.googleusercontent.com/-_2HAOUf_Sg4/AAAAAAAAAAI/AAAAAAAAAEs/Tl3ETkKaEGI/photo.jpg?sz=256',
-      text,
+      text: action.newPostText,
       likeCount: '0'
     };
 
@@ -62,19 +60,16 @@ const actors = {
     stateCopy.posts = [...substate.posts];
 
     stateCopy.posts.push(obj);
-    stateCopy.newPostText = '';
 
     return stateCopy;
   },
 
-  [UPDATE_POST_TEXT]: (substate, action) => {
-    substate = { ...substate };
-    substate.newPostText = action.text;
-    return substate;
+  [SET_PROFILE_DATA]: (substate, action) => {
+    return { ...substate, profileData: { ...action.profileData, status: action.status } };
   },
 
-  [SET_PROFILE_DATA]: (substate, action) => {
-    return { ...substate, profileData: action.profileData };
+  [SET_STATUS]: (substate, action) => {
+    return { ...substate, profileData: { ...substate.profileData, status: action.newStatus } };
   },
 
 };
@@ -86,16 +81,22 @@ const profilePageReducer = (substate = initialValue, action) => {
 export default profilePageReducer;
 
 // Action creators
-export const addPostActionCreator = () => ({ type: ADD_POST });
-export const updatePostTextActionCreator = (textareaText) => ({ type: UPDATE_POST_TEXT, text: textareaText });
-export const setProfileData = (profileData) => ({ type: SET_PROFILE_DATA, profileData });
+export const addPostActionCreator = (newPostText) => ({ type: ADD_POST, newPostText });
+export const setProfileData = (profileData, status) => ({ type: SET_PROFILE_DATA, profileData, status });
+export const setStatus = (newStatus) => ({ type: SET_STATUS, newStatus });
 
 // Thunk creators
 export const getProfile = (userId) => {
+  return async (dispatch) => {
+    const profileData = await profileAPI.getProfile(userId);
+    const statusText = await profileAPI.getStatus(userId);
+    dispatch(setProfileData(profileData, statusText));
+  };
+};
+export const updateStatus = (newStatus) => {
   return (dispatch) => {
-    usersAPI.getProfile(userId).then(data => {
-      dispatch(setProfileData(data));
+    if (newStatus.trim()) profileAPI.updateStatus(newStatus).then(response => {
+      if (response.resultCode === 0) dispatch(setStatus(newStatus));
     });
   };
 };
-

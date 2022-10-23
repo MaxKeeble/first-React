@@ -33,15 +33,28 @@ export const usersAPI = {
   unfollow: async (userId) => {
     return (await axiosInstance.delete('follow/' + userId)).data;
   },
+};
 
+export const profileAPI = {
   getProfile: async (userId) => {
     return (await axiosInstance.get('profile/' + userId)).data;
   },
 
+  getStatus: async (userId) => {
+    return (await axiosInstance.get('profile/status/' + userId)).data;
+  },
+
+  updateStatus: async (newStatus) => {
+    return (await axiosInstance.put('profile/status/', { status: newStatus })).data;
+  },
 };
 
 export const authorizationAPI = {
   me: async () => {
     return (await axiosInstance.get('auth/me')).data;
   },
+
+  login: async (loginData) => {
+    return (await axiosInstance.post('auth/login', loginData)).data;
+  }
 };

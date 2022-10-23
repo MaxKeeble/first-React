@@ -1,6 +1,7 @@
 .header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   grid-area: header;
   padding: 20px;
   background-color: brown;
@@ -18,9 +19,9 @@
   height: 30px;
 }
 
+.header__login-span,
 .header__login-link {
   font-size: 18px;
   font-weight: 600;
   color: #fff;
-  cursor: pointer;
 }

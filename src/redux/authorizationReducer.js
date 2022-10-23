@@ -10,7 +10,7 @@ let initialValue = {
     email: null,
   },
   isAuthorized: false,
-  isFetching: false,
+  isFetching: true,
 };
 
 const actors = {
@@ -18,7 +18,7 @@ const actors = {
   [SET_AUTHORIZED_USER_DATA]: (substate, action) => {
     return {
       ...substate,
-      authorizedUserData: { ...action.authorizedUserData },
+      authorizedUserData: { ...substate.authorizedUserData, ...action.authorizedUserData },
       isAuthorized: action.isAuthorized,
     };
   },
@@ -43,7 +43,7 @@ export const setAuthorizedUserData = ({ authorizedUserData, isAuthorized }) => (
 export const setIsFetching = (isFetching) => ({ type: SET_IS_FETCHING, isFetching });
 
 // Thunk creators
-export const authorize = () => {
+export const checkAuthorization = () => {
   return (dispatch) => {
     dispatch(setIsFetching(true));
     authorizationAPI.me().then(data => {
@@ -52,5 +52,14 @@ export const authorize = () => {
     }).catch(() => {
       dispatch(setIsFetching(false));
     });
+  };
+};
+
+export const authorize = (loginData) => {
+  return (dispatch) => {
+    authorizationAPI.login(loginData).then(data => {
+      console.log('data: ', data);
+      if (data.resultCode === 0) dispatch(setAuthorizedUserData({ authorizedUserData: { email: loginData.email, id: data.data.userId }, isAuthorized: true }));
+    }).catch(console.log);
   };
 };

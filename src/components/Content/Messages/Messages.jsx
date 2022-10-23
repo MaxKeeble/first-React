@@ -1,9 +1,11 @@
 // import React from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { NavLink } from 'react-router-dom';
 import { withAuthRedirect } from '../../../hoc/AuthRedirect';
 import { TextFormForMessagesContainer } from '../TextForm/TextForm';
 import './Messages.css';
+
 const DialogItem = props => (
   <li className="dialog-item">
     <NavLink className="dialog-item__link" to={props.data.id}>
@@ -12,6 +14,7 @@ const DialogItem = props => (
     </NavLink>
   </li>
 );
+
 const Message = props => (
   <div className={"message " + (props.data.side || 'left')}>{props.data.message}</div>
 );
@@ -43,4 +46,5 @@ let mapStateToProps = (state) => ({
   messages: state.messagesPage.messages,
 });
 
-export default withAuthRedirect(connect(mapStateToProps)(Messages));
+// export default withAuthRedirect(connect(mapStateToProps)(Messages));
+export default compose(withAuthRedirect, connect(mapStateToProps))(Messages);

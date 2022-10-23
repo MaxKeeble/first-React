@@ -1,9 +1,11 @@
 // import React from 'react';
-import './User.css';
-import defaultPhoto from '../../../../assets/images/defaultPhoto.jpg';
 import { connect } from 'react-redux';
+import './UserDescription.css';
+import defaultPhoto from '../../../../assets/images/defaultPhoto.jpg';
+import { UserStatus } from './UserStatus';
+import { updateStatus } from '../../../../redux/profilePageReducer';
 
-export function User({ profileData }) {
+export function UserDescription({ profileData, updateStatus }) {
   const contacts = [];
   for (const key in profileData.contacts) {
     if (profileData.contacts[key]) {
@@ -22,7 +24,8 @@ export function User({ profileData }) {
       <img className='user__avatar' src={profileData?.photos?.small || defaultPhoto} alt="avatar" />
       <div className="user-description ud">
         <h2 className="ud__name">{profileData.fullName}</h2>
-        <div className="ud__about">{'Обо мне: ' + (profileData.aboutMe || '-')}</div>
+        <div className="ud__status">Статус: <UserStatus status={profileData.status} updateStatus={updateStatus} /></div>
+        <div className="ud__about">Обо мне: {profileData.aboutMe || '-'}</div>
         {
           profileData.lookingForAJob ?
             <div className="ud__job">
@@ -50,4 +53,4 @@ let mapStateToProps = (state) => {
   }
 };
 
-export let UserContainer = connect(mapStateToProps)(User);
+export const UserDescriptionContainer = connect(mapStateToProps, {updateStatus})(UserDescription);
