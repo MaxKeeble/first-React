@@ -1,25 +1,37 @@
 import { connect } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { Form, Field } from 'react-final-form';
+import { Form } from 'react-final-form';
 import { authorize } from "../../../redux/authorizationReducer";
 import "./Login.css";
+import { Input } from "../../common/FormControls/FormControls";
+import { composeValidators, validators } from "../../../utils/validators/validators";
+
+let loginValidator = composeValidators(validators.required, validators.minLength(4), validators.maxLength(20));
+let passwordValidator = composeValidators(validators.required, validators.minLength(6), validators.maxLength(20));
 
 let LoginForm = (props) => {
   return (
     <Form onSubmit={props.onSubmit}>
-      {({ handleSubmit, pristine, form, submitting }) => (
-        <form className="login-form"
-          onSubmit={handleSubmit}> {/* Из компоненты Form (которая из библиотеки react-final-form) в props появляется handleSubmit, который вызывает props.onSubmit, передавая в качестве первого аргумента объект с данными формы  */}
+      {(props) => {
+        console.log('props: ', props);
+        let { handleSubmit, submitErrors, submitting } = props;
+        return (
+          <form className="login-form" onSubmit={handleSubmit}> {/* Из компоненты Form (которая из библиотеки react-final-form) в props, ко всему прочему, появляется handleSubmit, который вызывает props.onSubmit, передавая в качестве первого аргумента объект с данными формы  */}
 
-          <Field className="login-form__email" name='email' component='input' type='email' placeholder='E-mail' />
-          <Field className="login-form__password" name='password' component='input' type='password' placeholder='Password' />
-          <label className="login-form__label">
-            <Field name='rememberMe' component='input' type='checkbox' />
-            <span className="login-form__span">Remember me</span>
-          </label>
-          <button className="login-form__submit-btn">OK</button>
-        </form>
-      )}
+            <Input className="login-form__email" name='email' type='email' placeholder='E-mail' validate={loginValidator} />
+            <Input className="login-form__password" name='password' type='password' placeholder='Password' validate={passwordValidator} />
+            <label className="login-form__label">
+              <Input className="login-form__checkbox" name='rememberMe' type='checkbox' />
+              <span className="login-form__span">Remember me</span>
+            </label>
+
+            <div className="login-form__bottom">
+              <button className="login-form__submit-btn" type='submit' disabled={submitting}>OK</button>
+              {submitErrors && <span className="login-form__common-error">{submitErrors}</span>}
+            </div>
+          </form>
+        );
+      }}
     </Form>
   );
 };
@@ -41,4 +53,14 @@ const mapStateToProps = (state) => {
   }
 };
 
-export default connect(mapStateToProps, { authorize })(Login);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    authorize: (...args) => {
+      return new Promise((resolve) => {
+        dispatch(authorize(...args, resolve));
+      });
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

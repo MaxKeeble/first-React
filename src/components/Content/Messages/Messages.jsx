@@ -6,6 +6,9 @@ import { withAuthRedirect } from '../../../hoc/AuthRedirect';
 import { TextFormForMessagesContainer } from '../TextForm/TextForm';
 import './Messages.css';
 
+import SimpleBar from 'simplebar-react';
+import 'simplebar-react/dist/simplebar.min.css';
+
 const DialogItem = props => (
   <li className="dialog-item">
     <NavLink className="dialog-item__link" to={props.data.id}>
@@ -31,9 +34,19 @@ function Messages({ dialogs, messages }) {
           {dialogsElements}
         </ul>
         <div className="dialog-content-wrapper">
-          <div className="dialog-content">
+          {/* <div className="dialog-content" data-simplebar>
+            <div className="dialog-content__inner"> */}
+          <SimpleBar autoHide={false} style={{
+            maxHeight: 320,
+            marginBottom: 20,
+            padding: '10px 15px 10px 10px',
+            border: '1px solid #999',
+            borderRadius: 10,
+          }} >
             {messagesElements}
-          </div>
+          </SimpleBar>
+          {/* </div>
+          </div> */}
           <TextFormForMessagesContainer />
         </div>
       </div>

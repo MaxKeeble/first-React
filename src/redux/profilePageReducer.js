@@ -1,13 +1,18 @@
 import { profileAPI } from "../api/api";
 
 const ADD_POST = 'ADD_POST';
-const SET_PROFILE_DATA = 'SET_PROFILE_DATA';
+const SET_MAIN_USER_DATA = 'SET_MAIN_USER_DATA';
+const DISPLAY_MAIN_USER_DATA = 'DISPLAY_MAIN_USER_DATA';
+const SET_DISPLAYED_USER_DATA = 'SET_DISPLAYED_USER_DATA';
 const SET_STATUS = 'SET_STATUS';
+const SET_IS_FETCHING = 'SET_IS_FETCHING';
 
 let initialValue = {
   avatarImgSrc: '../img/user-ava.jpg',
 
-  profileData: {
+  displayedUserData: null,
+
+  mainUserData: {
     userId: 1,
     photos: {
       small: '../img/user-ava.jpg',
@@ -43,14 +48,16 @@ let initialValue = {
       likeCount: '222'
     },
   ],
-  // newPostText: '',
+
+  isFetching: false,
 };
 
 const actors = {
 
   [ADD_POST]: (substate, action) => {
-
+    let lastId = substate.posts.at(-1).id;
     let obj = {
+      id: lastId + 1,
       imgSrc: 'https://lh5.googleusercontent.com/-_2HAOUf_Sg4/AAAAAAAAAAI/AAAAAAAAAEs/Tl3ETkKaEGI/photo.jpg?sz=256',
       text: action.newPostText,
       likeCount: '0'
@@ -64,12 +71,23 @@ const actors = {
     return stateCopy;
   },
 
-  [SET_PROFILE_DATA]: (substate, action) => {
-    return { ...substate, profileData: { ...action.profileData, status: action.status } };
+  [SET_MAIN_USER_DATA]: (substate, action) => {
+    return { ...substate, mainUserData: { ...action.mainUserData, status: action.status } };
+  },
+  [DISPLAY_MAIN_USER_DATA]: (substate, action) => {
+    console.log(substate?.displayedUserData?.fullName);
+    return { ...substate, displayedUserData: substate.mainUserData };
+  },
+  [SET_DISPLAYED_USER_DATA]: (substate, action) => {
+    return { ...substate, displayedUserData: { ...action.displayedUserData, status: action.status } };
   },
 
   [SET_STATUS]: (substate, action) => {
-    return { ...substate, profileData: { ...substate.profileData, status: action.newStatus } };
+    return { ...substate, mainUserData: { ...substate.mainUserData, status: action.newStatus } };
+  },
+
+  [SET_IS_FETCHING]: (substate, action) => {
+    return { ...substate, isFetching: action.isFetching };
   },
 
 };
@@ -82,15 +100,30 @@ export default profilePageReducer;
 
 // Action creators
 export const addPostActionCreator = (newPostText) => ({ type: ADD_POST, newPostText });
-export const setProfileData = (profileData, status) => ({ type: SET_PROFILE_DATA, profileData, status });
+export const setMainUserData = (mainUserData, status) => ({ type: SET_MAIN_USER_DATA, mainUserData, status });
+export const displayMainUserData = () => ({ type: DISPLAY_MAIN_USER_DATA });
+export const setDisplayedUserData = (displayedUserData, status) => ({ type: SET_DISPLAYED_USER_DATA, displayedUserData, status });
 export const setStatus = (newStatus) => ({ type: SET_STATUS, newStatus });
+export const setIsFetching = (isFetching) => ({ type: SET_IS_FETCHING, isFetching });
+
 
 // Thunk creators
-export const getProfile = (userId) => {
+export const getMainUserData = (userId) => {
   return async (dispatch) => {
-    const profileData = await profileAPI.getProfile(userId);
+    const mainUserData = await profileAPI.getProfile(userId);
     const statusText = await profileAPI.getStatus(userId);
-    dispatch(setProfileData(profileData, statusText));
+    dispatch(setMainUserData(mainUserData, statusText));
+  };
+};
+export const getDisplayedUserData = (userId) => {
+  return async (dispatch) => {
+    dispatch(setIsFetching(true));
+
+    const displayedUserData = await profileAPI.getProfile(userId);
+    const statusText = await profileAPI.getStatus(userId);
+    dispatch(setDisplayedUserData(displayedUserData, statusText));
+
+    dispatch(setIsFetching(false));
   };
 };
 export const updateStatus = (newStatus) => {

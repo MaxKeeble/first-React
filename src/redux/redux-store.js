@@ -5,6 +5,7 @@ import profilePageReducer from "./profilePageReducer";
 import messagesPageReducer from "./messagesPageReducer";
 import usersPageReducer from "./usersPageReducer";
 import authorizationReducer from "./authorizationReducer";
+import appReducer from "./appReducer";
 
 let reducers = combineReducers({
   friendsList: friendsListReducer,
@@ -12,6 +13,7 @@ let reducers = combineReducers({
   messagesPage: messagesPageReducer,
   usersPage: usersPageReducer,
   authorization: authorizationReducer,
+  app: appReducer,
 });
 
 const store = createStore(reducers, applyMiddleware(thunkMiddleware));

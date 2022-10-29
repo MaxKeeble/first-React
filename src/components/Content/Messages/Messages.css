@@ -34,17 +34,14 @@
   text-shadow: 0 0 2px black;
 }
 
-.dialog-content {
+.dialog-content-wrapper {
+  max-width: 420px;
+}
+
+.messages .simplebar-content {
   display: flex;
   flex-direction: column;
   justify-self: center;
-  max-width: 480px;
-  max-height: 320px;
-  margin-bottom: 20px;
-  padding: 10px;
-  border: 1px solid #999;
-  border-radius: 10px;
-  overflow-y: auto;
 }
 
 .message {

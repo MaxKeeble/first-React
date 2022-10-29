@@ -10,11 +10,11 @@ export function Content() {
   return (
     <div className='content'>
       <Routes>
+        <Route path='login' element={<Login />} />
         <Route path='/profile/:userId' element={<ProfileContainer />} />
         <Route path='/*' element={<ProfileContainer />} />
         <Route path='messages/*' element={<Messages />} />
         <Route path='users/*' element={<UsersContainer />} />
-        <Route path='login' element={<Login />} />
       </Routes>
     </div>
   )

@@ -5,8 +5,9 @@ import { useLocation, useParams } from 'react-router-dom';
 import './Profile.css';
 import { UserDescriptionContainer } from './User/UserDescription';
 import { MyPosts } from './MyPosts/MyPosts';
-import { getProfile } from '../../../redux/profilePageReducer';
+import { displayMainUserData, getDisplayedUserData } from '../../../redux/profilePageReducer';
 import { withAuthRedirect } from '../../../hoc/AuthRedirect';
+import { Preloader } from '../../common/Preloader/Preloader';
 
 function Profile() {
   return (
@@ -19,11 +20,13 @@ function Profile() {
 
 class ProfileContainer extends React.Component {
   componentDidMount() {
-    const userId = this.props.params.userId || 26244;
-    this.props.getProfile(userId);
+    if (this.props.params.userId) this.props.getProfile(this.props.params.userId);
   }
 
   render() {
+    if (!this.props.params.userId) this.props.displayMainUserData();
+
+    if (this.props.isFetching) return <Preloader />;
     return <Profile />;
   }
 };
@@ -34,9 +37,13 @@ let ProfileContainerWithRouter = (props) => {
   return <ProfileContainer {...props} location={location} params={params} />;
 };
 
+
+let mapStateToProps = (state) => ({
+  isFetching: state.profilePage.isFetching,
+});
 let mapDispatchToProps = {
-  getProfile,
+  getProfile: getDisplayedUserData,
+  displayMainUserData
 };
 
-// export default withAuthRedirect(connect(null, mapDispatchToProps)(ProfileContainerWithRouter));
-export default compose(withAuthRedirect, connect(null, mapDispatchToProps))(ProfileContainerWithRouter);
+export default compose(withAuthRedirect, connect(mapStateToProps, mapDispatchToProps))(ProfileContainerWithRouter);

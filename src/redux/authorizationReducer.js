@@ -18,7 +18,7 @@ const actors = {
   [SET_AUTHORIZED_USER_DATA]: (substate, action) => {
     return {
       ...substate,
-      authorizedUserData: { ...substate.authorizedUserData, ...action.authorizedUserData },
+      authorizedUserData: { ...substate.authorizedUserData, ...(action.authorizedUserData || {}) },
       isAuthorized: action.isAuthorized,
     };
   },
@@ -44,22 +44,36 @@ export const setIsFetching = (isFetching) => ({ type: SET_IS_FETCHING, isFetchin
 
 // Thunk creators
 export const checkAuthorization = () => {
+
   return (dispatch) => {
     dispatch(setIsFetching(true));
-    authorizationAPI.me().then(data => {
-      dispatch(setIsFetching(false));
+    let promise = authorizationAPI.me();
+    promise.then(data => {
       if (data.resultCode === 0) dispatch(setAuthorizedUserData({ authorizedUserData: data.data, isAuthorized: true }));
-    }).catch(() => {
+    }).finally(() => {
       dispatch(setIsFetching(false));
     });
+    return promise;
   };
 };
 
-export const authorize = (loginData) => {
+export const authorize = (loginData, _, __, resolve) => {
   return (dispatch) => {
     authorizationAPI.login(loginData).then(data => {
       console.log('data: ', data);
-      if (data.resultCode === 0) dispatch(setAuthorizedUserData({ authorizedUserData: { email: loginData.email, id: data.data.userId }, isAuthorized: true }));
+      if (data.resultCode === 0) {
+        dispatch(setAuthorizedUserData({ authorizedUserData: { email: loginData.email, id: data.data.userId }, isAuthorized: true }));
+        resolve();
+      }
+      else resolve(data.messages.join('. '));
     }).catch(console.log);
+  };
+};
+
+export const logout = () => {
+  return (dispatch) => {
+    authorizationAPI.logout().then(data => {
+      if (data.resultCode === 0) dispatch(setAuthorizedUserData({ authorizedUserData: { email: null, id: null }, isAuthorized: false }));
+    });
   };
 };

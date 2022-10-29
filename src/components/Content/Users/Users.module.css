@@ -41,14 +41,38 @@
   min-width: 80px;
   padding: 5px 10px;
   border-radius: 5px;
-  background-color: #400;
+  text-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(rgb(68, 0, 0), rgb(122, 0, 0)) rgb(68, 0, 0);
+  box-shadow: 0 1px rgba(255, 255, 255, 0.2) inset, 0 3px 5px rgba(0, 1, 6, 0.5),
+    0 0 1px 1px rgba(0, 1, 6, 0.2);
+  transition: 0.2s ease-in-out;
 }
+.button:hover:not(:active) {
+  background: linear-gradient(rgb(83, 15, 15), rgb(112, 0, 0)) rgb(83, 15, 15);
+}
+.button:active {
+  top: 1px;
+  background: linear-gradient(rgb(34, 0, 0), rgb(56, 1, 14)) rgb(34, 0, 0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.5) inset,
+    0 2px 3px rgba(0, 0, 0, 0.5) inset, 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
 .button.followed {
-  background-color: #900;
+  background: linear-gradient(rgb(153, 0, 0), rgb(122, 0, 0)) rgb(153, 0, 0);
 }
-.button:disabled{
-  background-color: #ccc;
-  cursor: default;
+.button.followed:hover:not(:active) {
+  background: linear-gradient(rgb(168, 15, 15), rgb(112, 0, 0)) rgb(168, 15, 15);
+}
+.button.followed:active {
+  background: linear-gradient(rgb(119, 0, 0), rgb(90, 0, 0)) rgb(119, 0, 0);
+}
+
+.button:disabled,
+.button:disabled:hover:not(:active) {
+  background: #aaa;
+  border-color: #999;
+  box-shadow: none;
+  cursor: auto;
 }
 
 .userInfo {

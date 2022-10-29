@@ -49,8 +49,8 @@ export function UserDescription({ profileData, updateStatus }) {
 
 let mapStateToProps = (state) => {
   return {
-    profileData: state.profilePage.profileData
+    profileData: state.profilePage.displayedUserData
   }
 };
 
-export const UserDescriptionContainer = connect(mapStateToProps, {updateStatus})(UserDescription);
+export const UserDescriptionContainer = connect(mapStateToProps, { updateStatus })(UserDescription);

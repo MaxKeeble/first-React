@@ -13,10 +13,16 @@
   border-radius: 50%;
 }
 
-.header .preloader{
+.header .preloader {
   position: static;
   width: 30px;
   height: 30px;
+}
+
+.header__authorization {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .header__login-span,
@@ -24,4 +30,35 @@
   font-size: 18px;
   font-weight: 600;
   color: #fff;
+}
+
+.header__login-span {
+  margin-bottom: 10px;
+}
+
+.header__logout-BTN {
+  display: block;
+  width: fit-content;
+  padding: 5px 10px;
+  border: 1px solid #a52a2a;
+  border-radius: 5px;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+  outline: none;
+  background: linear-gradient(rgb(165, 42, 42), rgb(134, 12, 12))
+    rgb(165, 42, 42);
+  box-shadow: 0 1px rgba(255, 255, 255, 0.2) inset, 0 3px 5px rgba(0, 1, 6, 0.5),
+    0 0 1px 1px rgba(0, 1, 6, 0.2);
+  transition: 0.2s ease-in-out;
+}
+.header__logout-BTN:hover:not(:active) {
+  background: linear-gradient(rgb(180, 57, 57), rgb(124, 1, 18))
+    rgb(180, 57, 57);
+}
+.header__logout-BTN:active {
+  top: 1px;
+  background: linear-gradient(rgb(131, 26, 12), rgb(102, 0, 0)) rgb(131, 26, 12);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.5) inset,
+    0 2px 3px rgba(0, 0, 0, 0.5) inset, 0 1px 1px rgba(255, 255, 255, 0.1);
 }

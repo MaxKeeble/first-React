@@ -1,19 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Field } from 'react-final-form';
+import { Form } from 'react-final-form';
 import './TextForm.css';
 import { sendMessageActionCreator } from '../../../redux/messagesPageReducer';
 import { addPostActionCreator } from '../../../redux/profilePageReducer';
+import { composeValidators, validators } from '../../../utils/validators/validators';
+import { Textarea } from '../../common/FormControls/FormControls';
+
 
 export function TextForm({ onSubmit, buttonText }) {
   return (
     <Form onSubmit={onSubmit}>
-      {({ handleSubmit, pristine, form, submitting }) => (
-        <form className="post-form form" onSubmit={handleSubmit}>
-          <Field className="form__text" name='text' component='textarea' />
-          <button className="form__button">{buttonText}</button>
+      {(props) => {
+        let { handleSubmit } = props;
+        return <form className="post-form form" onSubmit={handleSubmit}>
+          <div>
+            <Textarea name='text' validate={composeValidators(
+              validators.required,
+              validators.minLength(4),
+              validators.maxLength(100))}
+              className="form__text"
+              placeholder="Write a message please"
+            />
+          </div>
+          <button className="form__button" type='submit'>{buttonText}</button>
         </form>
-      )}
+      }}
+
     </Form>
   )
 };
@@ -21,7 +34,7 @@ export function TextForm({ onSubmit, buttonText }) {
 //Mesages
 const mapStateToPropsForMessages = (state, myProps) => {
   return {
-    buttonText: 'Add message',
+    buttonText: 'Add a message',
   };
 };
 const mapDispatchToPropsForMessages = (dispatch, myProps) => {
@@ -38,7 +51,7 @@ export const TextFormForMessagesContainer = connect(mapStateToPropsForMessages, 
 //Posts
 const mapStateToPropsForPosts = (state, myProps) => {
   return {
-    buttonText: 'Add post',
+    buttonText: 'Add a post',
   };
 };
 const mapDispatchToPropsForPosts = (dispatch, myProps) => {

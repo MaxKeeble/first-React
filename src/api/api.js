@@ -56,5 +56,9 @@ export const authorizationAPI = {
 
   login: async (loginData) => {
     return (await axiosInstance.post('auth/login', loginData)).data;
-  }
+  },
+
+  logout: async () => {
+    return (await axiosInstance.delete('auth/login')).data;
+  },
 };
