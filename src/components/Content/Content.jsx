@@ -12,11 +12,11 @@ export function Content() {
       <Routes>
         <Route path='login' element={<Login />} />
         <Route path='/profile/:userId' element={<ProfileContainer />} />
-        <Route path='/*' element={<ProfileContainer />} />
+        <Route path='/' element={<ProfileContainer />} />
         <Route path='messages/*' element={<Messages />} />
-        <Route path='users/*' element={<UsersContainer />} />
+        <Route path='users/:currentPageNumber' element={<UsersContainer />} />
+        <Route path='users/' element={<UsersContainer />} />
       </Routes>
     </div>
   )
 };
-

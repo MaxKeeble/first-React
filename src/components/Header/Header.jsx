@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { logout } from '../../redux/authorizationReducer';
+import { getAuthorizedUserEmail, getIsAuthorized, getIsFetching, logout } from '../../redux/authorizationReducer';
 import './Header.css';
 import { Preloader } from '../common/Preloader/Preloader';
 
@@ -13,7 +13,7 @@ function Header(props) {
           ? <Preloader />
           : (props.isAuthorized
             ? (<div className='header__authorization'>
-              <span className='header__login-span'> You authorized: {props.authorizedUserData.email}</span>
+              <span className='header__login-span'> You authorized: {props.authorizedUserEmail}</span>
               <button className='header__logout-BTN' onClick={props.logout}>Logout</button>
             </div>)
             : <a href='/' className='header__login-link'>Login</a>)
@@ -22,22 +22,10 @@ function Header(props) {
   )
 }
 
-class HeaderContainer extends React.Component {
-  // componentDidMount() {
-  //   if (!this.props.isAuthorized) {
-  //     this.props.checkAuthorization();
-  //   }
-  // }
-
-  render() {
-    return <Header {...this.props} />;
-  };
-}
 
 const mapStateToProps = (state) => ({
-  authorizedUserData: state.authorization.authorizedUserData,
-  isAuthorized: state.authorization.isAuthorized,
-  isFetching: state.authorization.isFetching,
+  authorizedUserEmail: getAuthorizedUserEmail(state),
+  isAuthorized: getIsAuthorized(state),
+  isFetching: getIsFetching(state),
 });
-
-export default connect(mapStateToProps, { logout })(HeaderContainer);
+export default connect(mapStateToProps, { logout })(Header);

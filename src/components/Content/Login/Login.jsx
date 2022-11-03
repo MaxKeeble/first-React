@@ -1,10 +1,11 @@
 import { connect } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { Form } from 'react-final-form';
-import { authorize } from "../../../redux/authorizationReducer";
+import { authorize, getIsAuthorized } from "../../../redux/authorizationReducer";
 import "./Login.css";
 import { Input } from "../../common/FormControls/FormControls";
 import { composeValidators, validators } from "../../../utils/validators/validators";
+
 
 let loginValidator = composeValidators(validators.required, validators.minLength(4), validators.maxLength(20));
 let passwordValidator = composeValidators(validators.required, validators.minLength(6), validators.maxLength(20));
@@ -13,7 +14,6 @@ let LoginForm = (props) => {
   return (
     <Form onSubmit={props.onSubmit}>
       {(props) => {
-        console.log('props: ', props);
         let { handleSubmit, submitErrors, submitting } = props;
         return (
           <form className="login-form" onSubmit={handleSubmit}> {/* Из компоненты Form (которая из библиотеки react-final-form) в props, ко всему прочему, появляется handleSubmit, который вызывает props.onSubmit, передавая в качестве первого аргумента объект с данными формы  */}
@@ -36,6 +36,7 @@ let LoginForm = (props) => {
   );
 };
 
+
 const Login = (props) => {
   if (props.isAuthorized) return <Navigate replace to='/profile' />;
 
@@ -49,10 +50,9 @@ const Login = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    isAuthorized: state.authorization.isAuthorized,
+    isAuthorized: getIsAuthorized(state),
   }
 };
-
 const mapDispatchToProps = (dispatch) => {
   return {
     authorize: (...args) => {
@@ -62,5 +62,4 @@ const mapDispatchToProps = (dispatch) => {
     }
   }
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

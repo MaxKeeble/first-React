@@ -31,7 +31,7 @@ export function TextForm({ onSubmit, buttonText }) {
   )
 };
 
-//Mesages
+// Messages
 const mapStateToPropsForMessages = (state, myProps) => {
   return {
     buttonText: 'Add a message',
@@ -48,7 +48,7 @@ const mapDispatchToPropsForMessages = (dispatch, myProps) => {
 };
 export const TextFormForMessagesContainer = connect(mapStateToPropsForMessages, mapDispatchToPropsForMessages)(TextForm);
 
-//Posts
+// Posts
 const mapStateToPropsForPosts = (state, myProps) => {
   return {
     buttonText: 'Add a post',

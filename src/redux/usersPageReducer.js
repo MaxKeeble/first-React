@@ -1,10 +1,11 @@
+import { createSelector } from "reselect";
 import { usersAPI } from "../api/api";
+import { findAndPatchObject } from "../utils/utils";
 
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
 const ADD_USERS = 'ADD_USERS';
-const SET_CURRENT_PAGE_NUMBER = 'SET_CURRENT_PAGE_NUMBER';
 const SET_USERS_COUNT = 'SET_USERS_COUNT';
 const SET_IS_FETCHING = 'SET_IS_FETCHING_FOR_USERS_PAGE';
 const SET_USER_FOLLOWING_FETCHING = 'SET_USER_FOLLOWING_FETCHING';
@@ -54,7 +55,6 @@ let initialValue = {
       },
     },
   ],
-  currentPageNumber: 1,
   pageSize: 5,
   usersCount: 20,
   isFetching: false,
@@ -65,24 +65,14 @@ const actors = {
   [FOLLOW]: (substate, action) => {
     return {
       ...substate,
-      users: substate.users.map(user => {
-        if (user.id === action.userId) {
-          user = { ...user, followed: true };
-        }
-        return user;
-      })
+      users: findAndPatchObject(substate.users, { id: action.userId }, { followed: true }),
     };
   },
 
   [UNFOLLOW]: (substate, action) => {
     return {
       ...substate,
-      users: substate.users.map(user => {
-        if (user.id === action.userId) {
-          user = { ...user, followed: false };
-        }
-        return user;
-      })
+      users: findAndPatchObject(substate.users, { id: action.userId }, { followed: false }),
     };
   },
 
@@ -94,10 +84,6 @@ const actors = {
     return { ...substate, users: [...substate.users, ...action.users.map(user => ({ ...user, isFollowingFetching: false }))] };
   },
 
-  [SET_CURRENT_PAGE_NUMBER]: (substate, action) => {
-    return { ...substate, currentPageNumber: action.pageNumber };
-  },
-
   [SET_USERS_COUNT]: (substate, action) => {
     return { ...substate, usersCount: action.usersCount };
   },
@@ -107,13 +93,10 @@ const actors = {
   },
 
   [SET_USER_FOLLOWING_FETCHING]: (substate, action) => {
-
-    let users = substate.users.map(user => {
-      if (action.id === user.id) user.isFollowingFetching = action.isFetching;
-      return user;
-    });
-
-    return { ...substate, users: users };
+    return {
+      ...substate,
+      users: findAndPatchObject(substate.users, { id: action.userId }, { isFollowingFetching: action.isFetching }),
+    };
   },
 
 };
@@ -129,7 +112,6 @@ export const followAccept = (userId) => ({ type: FOLLOW, userId });
 export const unfollowAccept = (userId) => ({ type: UNFOLLOW, userId });
 export const setUsers = (users) => ({ type: SET_USERS, users });
 export const addUsers = (users) => ({ type: ADD_USERS, users });
-export const setCurrentPageNumber = (pageNumber) => ({ type: SET_CURRENT_PAGE_NUMBER, pageNumber });
 export const setUsersCount = (usersCount) => ({ type: SET_USERS_COUNT, usersCount });
 export const setIsFetching = (isFetching) => ({ type: SET_IS_FETCHING, isFetching });
 export const setUserFollowingFetching = (isFetching, id) => ({ type: SET_USER_FOLLOWING_FETCHING, isFetching, id });
@@ -143,13 +125,11 @@ export const getUsers = (currentPageNumber, pageSize) => {
       dispatch(setIsFetching(false));
       dispatch(setUsers(data.items));
       dispatch(setUsersCount(data.totalCount));
-      dispatch(setCurrentPageNumber(currentPageNumber));
     }).catch(() => {
       dispatch(setIsFetching(false));
     });
   };
 };
-
 export const follow = (id) => {
   return (dispatch) => {
     dispatch(setUserFollowingFetching(true, id));
@@ -159,7 +139,6 @@ export const follow = (id) => {
     }).catch(() => dispatch(setUserFollowingFetching(false, id)));
   };
 };
-
 export const unfollow = (id) => {
   return (dispatch) => {
     dispatch(setUserFollowingFetching(true, id));
@@ -168,4 +147,22 @@ export const unfollow = (id) => {
       if (data.resultCode === 0) dispatch(unfollowAccept(id));
     }).catch(() => dispatch(setUserFollowingFetching(false, id)));
   };
+};
+
+
+// Users-selectors
+export const selectorGetUsers = (state) => {
+  return state.usersPage.users;
+};
+export const superSelectorGetUsers = createSelector(selectorGetUsers, users => {
+  return users.filter(user => user.followed);
+});
+export const getPageSize = (state) => {
+  return state.usersPage.pageSize;
+};
+export const getUsersCount = (state) => {
+  return state.usersPage.usersCount;
+};
+export const getIsFetching = (state) => {
+  return state.usersPage.isFetching;
 };

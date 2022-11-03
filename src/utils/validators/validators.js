@@ -16,8 +16,6 @@ export const validators = {
   maxLength(max) {
     return (value => value.length > max ? ('Text must be not greater than ' + max + ' characters') : undefined);
   }
-
-
 };
 
 export const composeValidators = (...validators) => value =>

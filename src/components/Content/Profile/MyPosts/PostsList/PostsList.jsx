@@ -2,6 +2,7 @@
 import { connect } from 'react-redux';
 import './PostsList.css';
 import { Post } from "./Post/Post";
+import { getPosts, getAvatarImgSrc } from '../../../../../redux/profilePageReducer';
 
 export function PostsList({ posts, avatarImgSrc }) {
   const postsElements = posts.map(el =>
@@ -16,11 +17,11 @@ export function PostsList({ posts, avatarImgSrc }) {
   )
 };
 
+
 const mapStateToProps = (state) => {
   return {
-    posts: [...state.profilePage.posts],
-    avatarImgSrc: state.profilePage.avatarImgSrc,
+    posts: getPosts(state),
+    avatarImgSrc: getAvatarImgSrc(state),
   };
 };
-
 export const PostsListContainer = connect(mapStateToProps)(PostsList);

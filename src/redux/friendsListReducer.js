@@ -5,8 +5,7 @@ const initialValue = [
   { id: '4', name: 'Larisa', imgSrc: 'https://www.pngmart.com/files/10/Female-User-Account-PNG-HD.png' },
 ];
 
-const actors = {
-};
+const actors = {};
 
 const friendsListReducer = (substate = initialValue, action) => {
   return actors[action.type]?.(substate, action) || substate;

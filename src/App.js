@@ -7,7 +7,7 @@ import { Content } from './components/Content/Content';
 import { Footer } from './components/Footer/Footer';
 import { BrowserRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { initialize } from './redux/appReducer';
+import { getIsInitialized, initialize } from './redux/appReducer';
 import { Preloader } from './components/common/Preloader/Preloader';
 
 
@@ -34,13 +34,13 @@ class App extends React.Component {
   }
 }
 
+
 const mapStateToProps = (state) => ({
-  isInitialized: state.app.isInitialized
+  isInitialized: getIsInitialized(state)
 });
 const mapDispatchToProps = (dispatch) => ({
   initialize: () => {
     dispatch(initialize());
   }
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(App);

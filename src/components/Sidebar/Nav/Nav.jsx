@@ -5,7 +5,7 @@ import './Nav.css';
 export function Nav(props) {
   let className = 'nav';
   if (props.className) className += ' ' + props.className;
-  
+
   return (
     <div className={className}>
       <ul className="nav__list">

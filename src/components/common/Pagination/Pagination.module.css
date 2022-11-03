@@ -1,0 +1,19 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  row-gap: 8px;
+}
+
+.link {
+  display: inline-block;
+  padding: 0 5px 2px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.active {
+  color: #ccf;
+  border-bottom: 1px solid #ccf;
+  cursor: default;
+}

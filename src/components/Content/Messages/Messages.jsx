@@ -5,9 +5,10 @@ import { NavLink } from 'react-router-dom';
 import { withAuthRedirect } from '../../../hoc/AuthRedirect';
 import { TextFormForMessagesContainer } from '../TextForm/TextForm';
 import './Messages.css';
-
 import SimpleBar from 'simplebar-react';
 import 'simplebar-react/dist/simplebar.min.css';
+import { getDialogs, getMessages } from '../../../redux/messagesPageReducer';
+
 
 const DialogItem = props => (
   <li className="dialog-item">
@@ -34,8 +35,6 @@ function Messages({ dialogs, messages }) {
           {dialogsElements}
         </ul>
         <div className="dialog-content-wrapper">
-          {/* <div className="dialog-content" data-simplebar>
-            <div className="dialog-content__inner"> */}
           <SimpleBar autoHide={false} style={{
             maxHeight: 320,
             marginBottom: 20,
@@ -45,8 +44,6 @@ function Messages({ dialogs, messages }) {
           }} >
             {messagesElements}
           </SimpleBar>
-          {/* </div>
-          </div> */}
           <TextFormForMessagesContainer />
         </div>
       </div>
@@ -54,10 +51,10 @@ function Messages({ dialogs, messages }) {
   )
 };
 
-let mapStateToProps = (state) => ({
-  dialogs: state.messagesPage.dialogs,
-  messages: state.messagesPage.messages,
-});
 
+let mapStateToProps = (state) => ({
+  dialogs: getDialogs(state),
+  messages: getMessages(state),
+});
 // export default withAuthRedirect(connect(mapStateToProps)(Messages));
 export default compose(withAuthRedirect, connect(mapStateToProps))(Messages);

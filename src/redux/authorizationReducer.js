@@ -1,4 +1,5 @@
 import { authorizationAPI } from "../api/api";
+import { getMainUserData, setIsFetching as setIsFetchingProfile } from "./profilePageReducer";
 
 const SET_AUTHORIZED_USER_DATA = 'SET_AUTHORIZED_USER_DATA';
 const SET_IS_FETCHING = 'SET_IS_FETCHING_FOR_AUTHORIZATION';
@@ -38,13 +39,14 @@ const authorizationReducer = (substate = initialValue, action) => {
 
 export default authorizationReducer;
 
+
 // Action creators
 export const setAuthorizedUserData = ({ authorizedUserData, isAuthorized }) => ({ type: SET_AUTHORIZED_USER_DATA, authorizedUserData, isAuthorized });
 export const setIsFetching = (isFetching) => ({ type: SET_IS_FETCHING, isFetching });
 
+
 // Thunk creators
 export const checkAuthorization = () => {
-
   return (dispatch) => {
     dispatch(setIsFetching(true));
     let promise = authorizationAPI.me();
@@ -56,24 +58,37 @@ export const checkAuthorization = () => {
     return promise;
   };
 };
-
 export const authorize = (loginData, _, __, resolve) => {
   return (dispatch) => {
     authorizationAPI.login(loginData).then(data => {
-      console.log('data: ', data);
       if (data.resultCode === 0) {
+        dispatch(setIsFetchingProfile(true));
         dispatch(setAuthorizedUserData({ authorizedUserData: { email: loginData.email, id: data.data.userId }, isAuthorized: true }));
+        dispatch(getMainUserData(data.data.userId));
         resolve();
       }
       else resolve(data.messages.join('. '));
-    }).catch(console.log);
+    }).catch((error) => {
+      console.log(error);
+      resolve(error);
+    });
+  };
+};
+export const logout = () => {
+  return async (dispatch) => {
+    let data = await authorizationAPI.logout();
+    if (data.resultCode === 0) dispatch(setAuthorizedUserData({ authorizedUserData: { email: null, id: null }, isAuthorized: false }));
   };
 };
 
-export const logout = () => {
-  return (dispatch) => {
-    authorizationAPI.logout().then(data => {
-      if (data.resultCode === 0) dispatch(setAuthorizedUserData({ authorizedUserData: { email: null, id: null }, isAuthorized: false }));
-    });
-  };
+
+// Authorization-selectors
+export const getIsAuthorized = (state) => {
+  return state.authorization.isAuthorized;
+};
+export const getAuthorizedUserEmail = (state) => {
+  return state.authorization.authorizedUserData.email;
+};
+export const getIsFetching = (state) => {
+  return state.authorization.isFetching;
 };

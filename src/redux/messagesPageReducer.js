@@ -39,5 +39,17 @@ const messagePageReducer = (substate = initialValue, action) => {
 
 export default messagePageReducer;
 
-
+// Action creators
 export const sendMessageActionCreator = (newMessageText) => ({ type: SEND_MESSAGE, newMessageText });
+
+
+// Thunk creators
+
+
+// Messages-selectors
+export const getDialogs = (state) => {
+  return state.messagesPage.dialogs;
+};
+export const getMessages = (state) => {
+  return state.messagesPage.messages;
+};

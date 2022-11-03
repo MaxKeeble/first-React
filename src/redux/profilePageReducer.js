@@ -110,15 +110,14 @@ export const setIsFetching = (isFetching) => ({ type: SET_IS_FETCHING, isFetchin
 // Thunk creators
 export const getMainUserData = (userId) => {
   return async (dispatch) => {
-    const mainUserData = await profileAPI.getProfile(userId);
-    const statusText = await profileAPI.getStatus(userId);
+    const [mainUserData, statusText] = await Promise.all([profileAPI.getProfile(userId), profileAPI.getStatus(userId)]);
     dispatch(setMainUserData(mainUserData, statusText));
+    dispatch(setIsFetching(false));
   };
 };
 export const getDisplayedUserData = (userId) => {
   return async (dispatch) => {
     dispatch(setIsFetching(true));
-
     const displayedUserData = await profileAPI.getProfile(userId);
     const statusText = await profileAPI.getStatus(userId);
     dispatch(setDisplayedUserData(displayedUserData, statusText));
@@ -127,9 +126,28 @@ export const getDisplayedUserData = (userId) => {
   };
 };
 export const updateStatus = (newStatus) => {
-  return (dispatch) => {
-    if (newStatus.trim()) profileAPI.updateStatus(newStatus).then(response => {
-      if (response.resultCode === 0) dispatch(setStatus(newStatus));
-    });
+  return async (dispatch) => {
+    if (newStatus?.trim()) {
+      let response = await profileAPI.updateStatus(newStatus);
+      if (response.resultCode === 0) {
+        dispatch(setStatus(newStatus));
+        dispatch(displayMainUserData());
+      };
+    };
   };
+};
+
+
+// Profile-selectors
+export const getIsFetching = (state) => {
+  return state.profilePage.isFetching;
+};
+export const selectorGetDisplayedUserData = (state) => {
+  return state.profilePage.displayedUserData;
+};
+export const getPosts = (state) => {
+  return [...state.profilePage.posts];
+};
+export const getAvatarImgSrc = (state) => {
+  return state.profilePage.avatarImgSrc;
 };

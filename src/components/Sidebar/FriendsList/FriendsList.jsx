@@ -11,8 +11,10 @@ const Friend = ({ data, vertical }) => {
   </li>
 };
 
-function FriendsList({ data, vertical }) {
+function FriendsList({ friendsList, vertical, count }) {
+  const data = count ? friendsList.slice(0, count) : friendsList;
   const friendsElements = data.map(el => <Friend data={el} vertical={vertical} key={el.id} />);
+
   return (
     <div className="friends">
       <h2 className="friends__title">Friends</h2>
@@ -24,11 +26,10 @@ function FriendsList({ data, vertical }) {
 };
 
 const mapStateToProps = (state, myProps) => {
-  const data = myProps.count ? state.friendsList.slice(0, myProps.count) : state.friendsList;
   return {
-    data,
+    friendsList: state.friendsList,
     vertical: myProps.vertical || false,
+    count: myProps.count
   };
 };
-
 export const FriendsListContainer = connect(mapStateToProps)(FriendsList);
