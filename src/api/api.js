@@ -47,6 +47,20 @@ export const profileAPI = {
   updateStatus: async (newStatus) => {
     return (await axiosInstance.put('profile/status/', { status: newStatus })).data;
   },
+
+  savePhoto: async (photoFile) => {
+    const form = new FormData();
+    form.append('image', photoFile);
+
+    return (await axiosInstance.put('profile/photo/', form, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })).data;
+  },
+  saveUserData: async (data) => {
+    return (await axiosInstance.put('profile', data)).data;
+  },
 };
 
 export const authorizationAPI = {

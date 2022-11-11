@@ -4,7 +4,7 @@ import "./UserStatus.css";
 export function UserStatus(props) {
   let [editMode, setEditMode] = useState(false);
   let [statusText, setStatusText] = useState(props.status);
-  
+
   function blurHandler(event) {
     props.updateStatus(statusText);
     setEditMode(false);
@@ -23,7 +23,7 @@ export function UserStatus(props) {
   return <>
     {editMode
       ? <input className='user-status__input' onBlur={blurHandler} onChange={changeHandler} value={statusText || ''} autoFocus />
-      : <span className='user-status__span' onDoubleClick={doubleClickHandler}>{props.status || '------------'}</span>}
+      : <span className='user-status__span' onDoubleClick={doubleClickHandler}>{props.status || '-'}</span>}
   </>;
 }
 

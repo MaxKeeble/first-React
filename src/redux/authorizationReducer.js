@@ -2,7 +2,7 @@ import { authorizationAPI } from "../api/api";
 import { getMainUserData, setIsFetching as setIsFetchingProfile } from "./profilePageReducer";
 
 const SET_AUTHORIZED_USER_DATA = 'SET_AUTHORIZED_USER_DATA';
-const SET_IS_FETCHING = 'SET_IS_FETCHING_FOR_AUTHORIZATION';
+const SET_IS_FETCHING_AUTH = 'AUTHORIZATION/SET_IS_FETCHING';
 
 let initialValue = {
   authorizedUserData: {
@@ -24,7 +24,7 @@ const actors = {
     };
   },
 
-  [SET_IS_FETCHING]: (substate, action) => {
+  [SET_IS_FETCHING_AUTH]: (substate, action) => {
     return {
       ...substate,
       isFetching: action.isFetching,
@@ -42,7 +42,7 @@ export default authorizationReducer;
 
 // Action creators
 export const setAuthorizedUserData = ({ authorizedUserData, isAuthorized }) => ({ type: SET_AUTHORIZED_USER_DATA, authorizedUserData, isAuthorized });
-export const setIsFetching = (isFetching) => ({ type: SET_IS_FETCHING, isFetching });
+export const setIsFetching = (isFetching) => ({ type: SET_IS_FETCHING_AUTH, isFetching });
 
 
 // Thunk creators

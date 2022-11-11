@@ -1,6 +1,6 @@
+import classNames from "classnames";
 import { Field } from "react-final-form";
 import styles from './FormControls.module.css';
-
 
 export const Input = (props) => {
   return (
@@ -9,7 +9,7 @@ export const Input = (props) => {
         let errorCondition = meta.invalid && meta.submitFailed;
         return (
           <div className={styles.container}>
-            <input {...restProps} className={styles.input + (restProps.className ? ' ' + restProps.className : '')} {...input} />
+            <input {...restProps} className={classNames(styles.input, restProps.className)} {...input} />
             {errorCondition && <div className={styles.error}>{meta.error}</div>}
           </div>
         )
@@ -25,7 +25,7 @@ export const Textarea = (props) => {
         let errorCondition = meta.invalid && meta.submitFailed;
         return (
           <div className={styles.container}>
-            <textarea {...restProps} className={styles.textarea + (restProps.className ? ' ' + restProps.className : '')} {...input} />
+            <textarea {...restProps} className={classNames(styles.textarea, restProps.className)} {...input} />
             {errorCondition && <div className={styles.error}>{meta.error}</div>}
           </div>
         )

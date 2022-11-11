@@ -7,8 +7,9 @@ const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
 const ADD_USERS = 'ADD_USERS';
 const SET_USERS_COUNT = 'SET_USERS_COUNT';
-const SET_IS_FETCHING = 'SET_IS_FETCHING_FOR_USERS_PAGE';
+const SET_IS_FETCHING = 'USERS_PAGE/SET_IS_FETCHING';
 const SET_USER_FOLLOWING_FETCHING = 'SET_USER_FOLLOWING_FETCHING';
+const GET_INITIALIZED = 'USERS_PAGE/GET_INITIALIZED';
 
 let initialValue = {
   users: [
@@ -58,6 +59,8 @@ let initialValue = {
   pageSize: 5,
   usersCount: 20,
   isFetching: false,
+
+  isInitialized: false
 };
 
 const actors = {
@@ -98,6 +101,9 @@ const actors = {
       users: findAndPatchObject(substate.users, { id: action.userId }, { isFollowingFetching: action.isFetching }),
     };
   },
+  [GET_INITIALIZED]: (substate, action) => {
+    return { ...substate, isInitialized: true };
+  },
 
 };
 
@@ -115,6 +121,7 @@ export const addUsers = (users) => ({ type: ADD_USERS, users });
 export const setUsersCount = (usersCount) => ({ type: SET_USERS_COUNT, usersCount });
 export const setIsFetching = (isFetching) => ({ type: SET_IS_FETCHING, isFetching });
 export const setUserFollowingFetching = (isFetching, id) => ({ type: SET_USER_FOLLOWING_FETCHING, isFetching, id });
+export const getInitialized = () => ({ type: GET_INITIALIZED });
 
 
 // Thunk creators
@@ -122,9 +129,10 @@ export const getUsers = (currentPageNumber, pageSize) => {
   return (dispatch) => {
     dispatch(setIsFetching(true));
     usersAPI.getPage(currentPageNumber, pageSize).then(data => {
-      dispatch(setIsFetching(false));
       dispatch(setUsers(data.items));
       dispatch(setUsersCount(data.totalCount));
+      dispatch(setIsFetching(false));
+      dispatch(getInitialized(false));
     }).catch(() => {
       dispatch(setIsFetching(false));
     });

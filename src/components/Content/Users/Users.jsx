@@ -2,20 +2,19 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from "react-redux";
 import { compose } from 'redux';
-import { follow, getIsFetching, getPageSize, getUsers, getUsersCount, selectorGetUsers, setIsFetching, setUsers, setUsersCount, unfollow } from "../../../redux/usersPageReducer";
+import { follow, getInitialized, getIsFetching, getPageSize, getUsers, getUsersCount, selectorGetUsers, setIsFetching, setUsers, setUsersCount, unfollow } from "../../../redux/usersPageReducer";
 import styles from "./Users.module.css";
 import { Preloader } from '../../common/Preloader/Preloader';
 import { withAuthRedirect } from '../../../hoc/AuthRedirect';
 import { Pagination } from '../../common/Pagination/Pagination';
 import { User } from './User/User';
 
-function Users(props) {
-  const { pagesNumber, currentPageNumber, users, follow, unfollow } = props;
+const Users = React.memo(function(props) {
+  const { users, follow, unfollow } = props;
+  console.log('Users', new Date(Date.now()).toLocaleTimeString());
 
   return (
     <div>
-
-      <Pagination pagesNumber={pagesNumber} currentPageNumber={currentPageNumber} />
 
       <h2 className={styles.title}>Users</h2>
 
@@ -35,9 +34,10 @@ function Users(props) {
       </ul>
     </div>
   );
-}
+});
 
 const UsersAPIContainer = (props) => {
+  console.log('UsersContainer', new Date(Date.now()).toLocaleTimeString());
   const {
     getUsers,
     pageSize,
@@ -46,6 +46,7 @@ const UsersAPIContainer = (props) => {
     isFetching,
     unfollow,
     follow,
+    isInitialized
   } = props;
 
   let currentPageNumber = useParams().currentPageNumber || '1';
@@ -55,15 +56,18 @@ const UsersAPIContainer = (props) => {
 
   let pagesNumber = Math.ceil(usersCount / pageSize);
   pagesNumber = Math.min(pagesNumber, 25);
-
-  return <>
   
+  if (!isInitialized) {
+    return <Preloader />;
+  }
+  return <>
+
     {isFetching && <Preloader />}
+
+    <Pagination pagesNumber={pagesNumber} currentPageNumber={currentPageNumber} isDisabled={isFetching} />
 
     <Users
       {...{
-        pagesNumber,
-        currentPageNumber,
         users,
         unfollow,
         follow,
@@ -79,6 +83,7 @@ let mapStateToProps = (state) => {
     pageSize: getPageSize(state),
     usersCount: getUsersCount(state),
     isFetching: getIsFetching(state),
+    isInitialized: state.usersPage.isInitialized
   };
 };
 let mapDispatchToProps = {
@@ -88,5 +93,6 @@ let mapDispatchToProps = {
   setUsersCount,
   setIsFetching,
   getUsers,
+  getInitialized
 };
 export const UsersContainer = compose(withAuthRedirect, connect(mapStateToProps, mapDispatchToProps))(UsersAPIContainer);

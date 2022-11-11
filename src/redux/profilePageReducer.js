@@ -1,21 +1,23 @@
 import { profileAPI } from "../api/api";
+import {makeErrorsObject} from "../utils/utils";
 
 const ADD_POST = 'ADD_POST';
 const SET_MAIN_USER_DATA = 'SET_MAIN_USER_DATA';
 const DISPLAY_MAIN_USER_DATA = 'DISPLAY_MAIN_USER_DATA';
 const SET_DISPLAYED_USER_DATA = 'SET_DISPLAYED_USER_DATA';
 const SET_STATUS = 'SET_STATUS';
-const SET_IS_FETCHING = 'SET_IS_FETCHING';
+const SET_IS_FETCHING = 'PROFILE_PAGE/SET_IS_FETCHING';
+const SAVE_PHOTO_SUCCESS = 'PROFILE_PAGE/SAVE_PHOTO_SUCCESS';
 
 let initialValue = {
-  avatarImgSrc: '../img/user-ava.jpg',
+  avatarImgSrc: '../img/user_ava.jpg',
 
   displayedUserData: null,
 
   mainUserData: {
     userId: 1,
     photos: {
-      small: '../img/user-ava.jpg',
+      small: '../img/user_ava.jpg',
     },
     fullName: 'Andrey Shchetnikov',
     status: '0-0',
@@ -75,7 +77,6 @@ const actors = {
     return { ...substate, mainUserData: { ...action.mainUserData, status: action.status } };
   },
   [DISPLAY_MAIN_USER_DATA]: (substate, action) => {
-    console.log(substate?.displayedUserData?.fullName);
     return { ...substate, displayedUserData: substate.mainUserData };
   },
   [SET_DISPLAYED_USER_DATA]: (substate, action) => {
@@ -90,6 +91,14 @@ const actors = {
     return { ...substate, isFetching: action.isFetching };
   },
 
+  [SAVE_PHOTO_SUCCESS]: (substate, action) => {
+    return {
+      ...substate,
+      displayedUserData: { ...substate.displayedUserData, photos: action.photos },
+      mainUserData: { ...substate.mainUserData, photos: action.photos }
+    };
+  },
+
 };
 
 const profilePageReducer = (substate = initialValue, action) => {
@@ -101,17 +110,20 @@ export default profilePageReducer;
 // Action creators
 export const addPostActionCreator = (newPostText) => ({ type: ADD_POST, newPostText });
 export const setMainUserData = (mainUserData, status) => ({ type: SET_MAIN_USER_DATA, mainUserData, status });
-export const displayMainUserData = () => ({ type: DISPLAY_MAIN_USER_DATA });
 export const setDisplayedUserData = (displayedUserData, status) => ({ type: SET_DISPLAYED_USER_DATA, displayedUserData, status });
+export const displayMainUserData = () => ({ type: DISPLAY_MAIN_USER_DATA });
 export const setStatus = (newStatus) => ({ type: SET_STATUS, newStatus });
 export const setIsFetching = (isFetching) => ({ type: SET_IS_FETCHING, isFetching });
+export const savePhotoSuccess = (photos) => ({ type: SAVE_PHOTO_SUCCESS, photos });
 
 
 // Thunk creators
 export const getMainUserData = (userId) => {
   return async (dispatch) => {
     const [mainUserData, statusText] = await Promise.all([profileAPI.getProfile(userId), profileAPI.getStatus(userId)]);
+    console.log('mainUserData: ', mainUserData);
     dispatch(setMainUserData(mainUserData, statusText));
+    dispatch(displayMainUserData());
     dispatch(setIsFetching(false));
   };
 };
@@ -136,11 +148,36 @@ export const updateStatus = (newStatus) => {
     };
   };
 };
+export const savePhoto = (file) => {
+  return async (dispatch) => {
+    let response = await profileAPI.savePhoto(file);
+
+    if (response.resultCode === 0) {
+      dispatch(savePhotoSuccess(response.data.photos));
+    };
+  };
+};
+export const saveUserData = (data, form, callback) => {
+  return async (dispatch, getState) => {
+    let responseData = await profileAPI.saveUserData(data);
+
+    if (responseData.resultCode === 0) {
+      dispatch(getMainUserData(data.userId));
+      callback();
+    }
+    else {
+      callback(makeErrorsObject(responseData.messages));
+    }
+  };
+};
 
 
 // Profile-selectors
 export const getIsFetching = (state) => {
   return state.profilePage.isFetching;
+};
+export const getMainUserId = (state) => {
+  return state.profilePage.mainUserData.userId;
 };
 export const selectorGetDisplayedUserData = (state) => {
   return state.profilePage.displayedUserData;

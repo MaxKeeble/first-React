@@ -17,7 +17,7 @@ let store = {
     ],
     content: {
       profilePage: {
-        avatarImgSrc: '../img/user-ava.jpg',
+        avatarImgSrc: '../img/user_ava.jpg',
         posts: [
           {
             text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur magni dolor molestias nostrum veniam ea doloribus quas officiis assumenda porro, autem provident a eaque nam. orem ipsum dolor sit amet consectetur adipisicing elit.',
