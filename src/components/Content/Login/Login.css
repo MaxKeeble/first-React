@@ -1,0 +1,76 @@
+.login__title {
+  margin-bottom: 35px;
+  font-size: 30px;
+}
+
+.login-form {
+  max-width: 350px;
+  padding: 25px;
+  border: 1px solid #000;
+  border-radius: 20px;
+  background-color: #d61;
+}
+
+.login-form__email,
+.login-form__password {
+  border-radius: 4px;
+}
+.login-form__label {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+.login-form__checkbox {
+  margin-top: 6px;
+}
+
+.login-form__bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.login-form__submit-btn {
+  display: block;
+  padding: 5px 25px;
+  border: 1px solid #dd6611;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 800;
+  background-color: #fff;
+  text-decoration: none;
+  text-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+  outline: none;
+  background: linear-gradient(rgb(221, 102, 17), rgb(190, 72, 0))
+    rgb(221, 102, 17);
+  box-shadow: 0 1px rgba(255, 255, 255, 0.2) inset, 0 3px 5px rgba(0, 1, 6, 0.5),
+    0 0 1px 1px rgba(0, 1, 6, 0.2);
+  transition: 0.2s ease-in-out;
+}
+
+.login-form__submit-btn:hover:not(:active) {
+  background: linear-gradient(rgb(236, 117, 32), rgb(179, 61, 17))
+    rgb(236, 117, 32);
+}
+
+.login-form__submit-btn:active {
+  top: 1px;
+  background: linear-gradient(rgb(202, 86, 8), rgb(158, 52, 0)) rgb(202, 86, 8);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.5) inset,
+    0 2px 3px rgba(0, 0, 0, 0.5) inset, 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.login-form__submit-btn:disabled,
+.login-form__submit-btn:disabled:hover:not(:active) {
+  background: #aaa;
+  border-color: #999;
+  box-shadow: none;
+  cursor: auto;
+}
+
+.login-form__common-error {
+  text-align: center;
+  font-size: 14px;
+  color: #f44;
+  text-shadow: 0 0 5px black, 0 0 3px black;
+}

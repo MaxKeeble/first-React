@@ -1,0 +1,7 @@
+.content {
+  position: relative;
+  grid-area: content;
+  padding: 20px;
+  color: #fff;
+  background-color: #734;
+}

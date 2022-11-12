@@ -1,0 +1,28 @@
+.post__content {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.post__avatar {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+
+.post__text {
+  font-size: 14px;
+}
+
+.like {
+  display: flex;
+  align-items: center;
+}
+
+.like__button {
+  margin-right: 10px;
+}
+
+.like__count {
+  font-size: 12px;
+}

@@ -1,0 +1,10 @@
+.sidebar {
+  grid-area: sidebar;
+  padding: 20px;
+  color: #fff;
+  background-color: #734;
+}
+
+.sidebar__nav {
+  margin-bottom: 80px;
+}

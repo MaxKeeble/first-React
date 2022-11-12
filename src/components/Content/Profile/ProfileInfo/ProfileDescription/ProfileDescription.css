@@ -1,0 +1,13 @@
+.profile-description {
+  grid-area: description;
+}
+
+.pd__name {
+  margin-bottom: 20px;
+}
+
+.contact-link {
+  display: inline-block;
+  text-decoration: underline;
+  color: #ccf;
+}

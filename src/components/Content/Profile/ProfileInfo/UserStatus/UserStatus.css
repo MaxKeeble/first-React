@@ -1,0 +1,7 @@
+.user-status__input {
+  vertical-align: bottom;
+}
+.user-status__span:hover {
+  text-decoration: underline;
+  background-color: rgba(255, 255, 255, 0.1);
+}
