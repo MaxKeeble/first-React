@@ -1,5 +1,6 @@
 import { profileAPI } from "../api/api";
 import {makeErrorsObject} from "../utils/utils";
+import userAva from "../assets/images/user_ava.jpg";
 
 const ADD_POST = 'ADD_POST';
 const SET_MAIN_USER_DATA = 'SET_MAIN_USER_DATA';
@@ -10,14 +11,14 @@ const SET_IS_FETCHING = 'PROFILE_PAGE/SET_IS_FETCHING';
 const SAVE_PHOTO_SUCCESS = 'PROFILE_PAGE/SAVE_PHOTO_SUCCESS';
 
 let initialValue = {
-  avatarImgSrc: '../img/user_ava.jpg',
+  avatarImgSrc: userAva,
 
   displayedUserData: null,
 
   mainUserData: {
     userId: 1,
     photos: {
-      small: '../img/user_ava.jpg',
+      small: userAva,
     },
     fullName: 'Andrey Shchetnikov',
     status: '0-0',

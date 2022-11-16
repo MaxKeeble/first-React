@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from "react-redux";
 import { compose } from 'redux';
-import { follow, getInitialized, getIsFetching, getPageSize, getUsers, getUsersCount, selectorGetUsers, setIsFetching, setUsers, setUsersCount, unfollow } from "../../../redux/usersPageReducer";
+import { follow, getInitialized, getIsFetching, getIsInitialized, getPageSize, getUsers, getUsersCount, selectorGetUsers, setIsFetching, setUsers, setUsersCount, unfollow } from "../../../redux/usersPageReducer";
 import styles from "./Users.module.css";
 import { Preloader } from '../../common/Preloader/Preloader';
 import { withAuthRedirect } from '../../../hoc/AuthRedirect';
 import { Pagination } from '../../common/Pagination/Pagination';
 import { User } from './User/User';
 
-const Users = React.memo(function(props) {
+const Users = React.memo(function (props) {
   const { users, follow, unfollow } = props;
   console.log('Users', new Date(Date.now()).toLocaleTimeString());
 
@@ -56,7 +56,7 @@ const UsersAPIContainer = (props) => {
 
   let pagesNumber = Math.ceil(usersCount / pageSize);
   pagesNumber = Math.min(pagesNumber, 25);
-  
+
   if (!isInitialized) {
     return <Preloader />;
   }
@@ -83,7 +83,7 @@ let mapStateToProps = (state) => {
     pageSize: getPageSize(state),
     usersCount: getUsersCount(state),
     isFetching: getIsFetching(state),
-    isInitialized: state.usersPage.isInitialized
+    isInitialized: getIsInitialized(state),
   };
 };
 let mapDispatchToProps = {

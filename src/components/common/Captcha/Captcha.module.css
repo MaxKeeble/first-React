@@ -1,0 +1,12 @@
+.captcha{
+  padding: 20px 0;
+}
+
+.captcha__img{
+  margin-bottom: 10px;
+}
+
+.captcha__input{
+  width: 200px;
+}
+

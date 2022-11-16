@@ -65,8 +65,6 @@ const ProfileInfoContainer = ({
   savePhoto,
   saveUserData }) => {
 
-  let isMyOwn = profileData.userId === mainUserId;
-
   let [isFirstCall, setIsFirstCall] = useState(true);
 
   if (isFirstCall) {
@@ -74,12 +72,17 @@ const ProfileInfoContainer = ({
     setIsFirstCall(false);
   }
 
+  // useEffect(() => {
+  //   if (params.userId) getProfile(params.userId);
+  // }, []);
+
   useEffect(() => {
     if (!params.userId && !isFetching) displayMainUserData();
   }, [params.userId, displayMainUserData, isFetching]);
 
   if (isFetching) return <Preloader />;
 
+  let isMyOwn = profileData.userId === mainUserId;
 
   const contacts = [];
   for (const key in profileData.contacts) {

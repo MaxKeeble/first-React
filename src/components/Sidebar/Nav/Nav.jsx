@@ -10,7 +10,7 @@ export function Nav(props) {
     <div className={className}>
       <ul className="nav__list">
         <li className="nav__item">
-          <NavLink to='/' className='nav__link'>Profile</NavLink>
+          <NavLink to='/profile' className='nav__link'>Profile</NavLink>
         </li>
         <li className="nav__item">
           <NavLink to='/messages' className='nav__link'>Messages</NavLink>

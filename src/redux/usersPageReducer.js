@@ -60,7 +60,7 @@ let initialValue = {
   usersCount: 20,
   isFetching: false,
 
-  isInitialized: false
+  isInitialized: false,
 };
 
 const actors = {
@@ -173,4 +173,7 @@ export const getUsersCount = (state) => {
 };
 export const getIsFetching = (state) => {
   return state.usersPage.isFetching;
+};
+export const getIsInitialized = (state) => {
+  return state.usersPage.isInitialized;
 };

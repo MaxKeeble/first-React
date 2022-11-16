@@ -1,8 +1,9 @@
-import { authorizationAPI } from "../api/api";
+import { authorizationAPI, securityAPI } from "../api/api";
 import { getMainUserData, setIsFetching as setIsFetchingProfile } from "./profilePageReducer";
 
 const SET_AUTHORIZED_USER_DATA = 'SET_AUTHORIZED_USER_DATA';
 const SET_IS_FETCHING_AUTH = 'AUTHORIZATION/SET_IS_FETCHING';
+const SET_CAPTCHA_URL = 'AUTHORIZATION/SET_CAPTCHA_URL';
 
 let initialValue = {
   authorizedUserData: {
@@ -10,6 +11,7 @@ let initialValue = {
     id: null,
     email: null,
   },
+  captchaUrl: null,
   isAuthorized: false,
   isFetching: true,
 };
@@ -31,6 +33,13 @@ const actors = {
     };
   },
 
+  [SET_CAPTCHA_URL]: (substate, action) => {
+    return {
+      ...substate,
+      captchaUrl: action.captchaUrl,
+    };
+  },
+
 };
 
 const authorizationReducer = (substate = initialValue, action) => {
@@ -43,6 +52,7 @@ export default authorizationReducer;
 // Action creators
 export const setAuthorizedUserData = ({ authorizedUserData, isAuthorized }) => ({ type: SET_AUTHORIZED_USER_DATA, authorizedUserData, isAuthorized });
 export const setIsFetching = (isFetching) => ({ type: SET_IS_FETCHING_AUTH, isFetching });
+export const setCaptchaUrl = (captchaUrl) => ({ type: SET_CAPTCHA_URL, captchaUrl });
 
 
 // Thunk creators
@@ -59,20 +69,33 @@ export const checkAuthorization = () => {
   };
 };
 export const authorize = (loginData, _, __, resolve) => {
+  console.log('loginData, _, __, resolve: ', loginData, _, __, resolve);
   return (dispatch) => {
     authorizationAPI.login(loginData).then(data => {
       if (data.resultCode === 0) {
         dispatch(setIsFetchingProfile(true));
-        dispatch(setAuthorizedUserData({ authorizedUserData: { email: loginData.email, id: data.data.userId }, isAuthorized: true }));
         dispatch(getMainUserData(data.data.userId));
+        dispatch(setAuthorizedUserData({ authorizedUserData: { email: loginData.email, id: data.data.userId }, isAuthorized: true }));
+        dispatch(setCaptchaUrl(null));
         resolve();
       }
-      else resolve(data.messages.join('. '));
+      else {
+        if (data.resultCode === 10) {
+          dispatch(getCaptchaUrl());
+        }
+        resolve(data.messages.join('. '));
+      }
     }).catch((error) => {
       console.log(error);
       resolve(error);
     });
   };
+};
+export const getCaptchaUrl = () => async (dispatch) => {
+  const responseData = await securityAPI.getCaptchaUrl();
+  const captchaUrl = responseData.url;
+
+  dispatch(setCaptchaUrl(captchaUrl));
 };
 export const logout = () => {
   return async (dispatch) => {
@@ -91,4 +114,7 @@ export const getAuthorizedUserEmail = (state) => {
 };
 export const getIsFetching = (state) => {
   return state.authorization.isFetching;
+};
+export const selectorGetCaptchaUrl = (state) => {
+  return state.authorization.captchaUrl;
 };

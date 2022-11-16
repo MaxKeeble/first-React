@@ -1,16 +1,19 @@
 import { connect } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { Form } from 'react-final-form';
-import { authorize, getIsAuthorized } from "../../../redux/authorizationReducer";
+import { authorize, getIsAuthorized, selectorGetCaptchaUrl } from "../../../redux/authorizationReducer";
 import "./Login.css";
 import { Input } from "../../common/FormControls/FormControls";
 import { composeValidators, validators } from "../../../utils/validators/validators";
+import { Captcha } from "../../common/Captcha/Captcha";
 
 
 let loginValidator = composeValidators(validators.required, validators.minLength(4), validators.maxLength(20));
 let passwordValidator = composeValidators(validators.required, validators.minLength(6), validators.maxLength(20));
 
 let LoginForm = (props) => {
+  const captchaUrl = props.captchaUrl;
+
   return (
     <Form onSubmit={props.onSubmit}>
       {(props) => {
@@ -24,6 +27,8 @@ let LoginForm = (props) => {
               <Input className="login-form__checkbox" name='rememberMe' type='checkbox' />
               <span className="login-form__span">Remember me</span>
             </label>
+
+            {captchaUrl && <Captcha captchaUrl={captchaUrl}/>}
 
             <div className="login-form__bottom">
               <button className="login-form__submit-btn" type='submit' disabled={submitting}>OK</button>
@@ -43,7 +48,7 @@ const Login = (props) => {
   return (
     <>
       <h2 className="login__title">Login</h2>
-      <LoginForm onSubmit={props.authorize} />
+      <LoginForm onSubmit={props.authorize} captchaUrl={props.captchaUrl} />
     </>
   );
 };
@@ -51,6 +56,7 @@ const Login = (props) => {
 const mapStateToProps = (state) => {
   return {
     isAuthorized: getIsAuthorized(state),
+    captchaUrl: selectorGetCaptchaUrl(state),
   }
 };
 const mapDispatchToProps = (dispatch) => {
@@ -59,7 +65,7 @@ const mapDispatchToProps = (dispatch) => {
       return new Promise((resolve) => {
         dispatch(authorize(...args, resolve));
       });
-    }
+    },
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

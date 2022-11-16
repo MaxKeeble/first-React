@@ -69,10 +69,17 @@ export const authorizationAPI = {
   },
 
   login: async (loginData) => {
+    console.log('loginData: ', loginData);
     return (await axiosInstance.post('auth/login', loginData)).data;
   },
 
   logout: async () => {
     return (await axiosInstance.delete('auth/login')).data;
+  },
+};
+
+export const securityAPI = {
+  getCaptchaUrl: async () => {
+    return (await axiosInstance.get('security/get-captcha-url')).data;
   },
 };
